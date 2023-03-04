@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint . --fix"
+  },
   "dependencies": {
     "sync-hookable": "^1.0.1",
     "unbuild": "^1.1.2",

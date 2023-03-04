@@ -1,4 +1,4 @@
-import { ValidationResult, VeeObserver, VNodeWithVeeContext } from '@/types';
+import { ValidationResult, VeeObserver, VNodeWithVeeContext } from "@/types"
 
 declare module "vue" {
   interface ComponentCustomProperties {
