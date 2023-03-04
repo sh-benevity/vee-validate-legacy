@@ -13,6 +13,7 @@ import { ProviderInstance, ValidationFlags, ValidationResult, VeeObserver, VNode
 import { addListeners, computeModeSetting, createValidationCtx, triggerThreadSafeValidation } from "./common"
 import { EVENT_BUS } from "../localeChanged"
 import { generateVueHooks, getVueHooks } from "@/components/hooks"
+import { enableWarn, suppressWarn } from "@/utils/console"
 
 let PROVIDER_COUNTER = 0
 
@@ -153,7 +154,9 @@ export const ValidationProvider = defineComponent({
       })
     },
     isRequired(): boolean {
+      suppressWarn()
       const rules = { ...this._resolvedRules, ...this.normalizedRules }
+      enableWarn()
 
       const isRequired = Object.keys(rules).some(RuleContainer.isRequireRule)
       this.flags.required = !!isRequired
@@ -218,9 +221,11 @@ export const ValidationProvider = defineComponent({
           }
 
           const resolved = getConfig().useConstraintAttrs ? resolveRules(input) : {}
+          suppressWarn()
           if (!isEqual(this._resolvedRules, resolved)) {
             this._needsValidation = true
           }
+          enableWarn()
 
           if (isHTMLNode(input)) {
             this.fieldName = input.props?.name || input.props?.id

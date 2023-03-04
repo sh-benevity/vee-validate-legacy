@@ -5,15 +5,18 @@ import { modes, InteractionModeFactory } from "../modes"
 import { ValidationResult, ValidationFlags, KnownKeys, ProviderInstance } from "../types"
 import { findModel, getInputEventName, addVNodeListener, findValue } from "../utils/vnode"
 import { VueHookable } from "@/components/hooks"
+import { enableWarn, suppressWarn } from "@/utils/console"
 
 /**
  * Determines if a provider needs to run validation.
  */
 function shouldValidate(ctx: ProviderInstance, value: string) {
   // when an immediate/initial validation is needed and wasn't done before.
+  suppressWarn()
   if (!ctx._ignoreImmediate && ctx.immediate) {
     return true
   }
+  enableWarn()
 
   // when the value changes for whatever reason.
   if (!isRefEqual(ctx.value, value) && ctx.normalizedEvents.length) {
@@ -169,7 +172,9 @@ export function createCommonHandlers(vm: ProviderInstance) {
 export function addListeners(vm: ProviderInstance, node: VNode, vueHooks: VueHookable) {
   const value = findValue(node)
   // cache the input eventName.
+  suppressWarn()
   vm._inputEventName = vm._inputEventName || getInputEventName(node, findModel(node))
+  enableWarn()
   onRenderUpdate(vm, value?.value, vueHooks)
 
   const { onInput, onBlur, onValidate } = createCommonHandlers(vm)
