@@ -4,6 +4,7 @@ import { isCallable, debounce, isRefEqual } from "../utils"
 import { modes, InteractionModeFactory } from "../modes"
 import { ValidationResult, ValidationFlags, KnownKeys, ProviderInstance } from "../types"
 import { findModel, getInputEventName, addVNodeListener, findValue } from "../utils/vnode"
+import { VueHookable } from "@/components/hooks"
 
 /**
  * Determines if a provider needs to run validation.
@@ -70,7 +71,7 @@ export function createValidationCtx(ctx: ProviderInstance): ValidationContext {
   }
 }
 
-export function onRenderUpdate(vm: ProviderInstance, value: any | undefined) {
+export function onRenderUpdate(vm: ProviderInstance, value: any | undefined, vueHooks: VueHookable) {
   if (!vm.initialized) {
     vm.initialValue = value
   }
@@ -97,9 +98,7 @@ export function onRenderUpdate(vm: ProviderInstance, value: any | undefined) {
     return
   }
 
-  // TODO: FIX
-  // @ts-ignore
-  vm.$once("hook:mounted", () => validate())
+  vueHooks.hookOnce("hook:mounted", () => validate())
 }
 
 export function computeModeSetting(ctx: ProviderInstance) {
@@ -159,7 +158,7 @@ export function createCommonHandlers(vm: ProviderInstance) {
 
     // Cache the handler so we don't create it each time.
     vm.$veeHandler = onValidate
-    // cache the debounce value so we detect if it was changed.
+    // cache the debounced value so we detect if it was changed.
     vm.$veeDebounce = vm.debounce
   }
 
@@ -167,11 +166,11 @@ export function createCommonHandlers(vm: ProviderInstance) {
 }
 
 // Adds all plugin listeners to the vnode.
-export function addListeners(vm: ProviderInstance, node: VNode) {
+export function addListeners(vm: ProviderInstance, node: VNode, vueHooks: VueHookable) {
   const value = findValue(node)
   // cache the input eventName.
   vm._inputEventName = vm._inputEventName || getInputEventName(node, findModel(node))
-  onRenderUpdate(vm, value?.value)
+  onRenderUpdate(vm, value?.value, vueHooks)
 
   const { onInput, onBlur, onValidate } = createCommonHandlers(vm)
   addVNodeListener(node, vm._inputEventName, onInput)

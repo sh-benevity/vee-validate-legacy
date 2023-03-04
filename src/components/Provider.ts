@@ -1,7 +1,6 @@
 // @ts-nocheck
 import { defineComponent, VNode, h } from "vue"
 import isEqual from "fast-deep-equal"
-import { createHooks } from "sync-hookable"
 
 import { extractLocators, normalizeRules } from "../utils/rules"
 import { normalizeEventValue } from "../utils/events"
@@ -13,6 +12,7 @@ import { RuleContainer } from "../extend"
 import { ProviderInstance, ValidationFlags, ValidationResult, VeeObserver, VNodeWithVeeContext } from "../types"
 import { addListeners, computeModeSetting, createValidationCtx, triggerThreadSafeValidation } from "./common"
 import { EVENT_BUS } from "../localeChanged"
+import { generateVueHooks, getVueHooks } from "@/components/hooks"
 
 let PROVIDER_COUNTER = 0
 
@@ -35,7 +35,6 @@ function data() {
 }
 
 const localeChangedMap = new Map<any, () => void>()
-const hookMaps = new Map<any>()
 
 export const ValidationProvider = defineComponent({
   name: "ValidationProvider",
@@ -125,7 +124,7 @@ export const ValidationProvider = defineComponent({
   },
   data,
   beforeCreate() {
-    hookMaps.set(this, createHooks())
+    generateVueHooks(this)
   },
   computed: {
     fieldDeps(): string[] {
@@ -195,6 +194,8 @@ export const ValidationProvider = defineComponent({
 
     EVENT_BUS.hook("change:locale", onLocaleChanged)
     localeChangedMap.set(this, onLocaleChanged)
+    const hooks = getVueHooks(this)
+    hooks.callHook("hook:mounted")
   },
   beforeUnmount() {
     const onLocaleChanged = localeChangedMap.get(this)
@@ -222,11 +223,13 @@ export const ValidationProvider = defineComponent({
           }
 
           if (isHTMLNode(input)) {
-            this.fieldName = input.data?.attrs?.name || input.data?.attrs?.id
+            this.fieldName = input.props.name || input.data?.attrs?.id
           }
 
           this._resolvedRules = resolved
-          addListeners(this, input)
+
+          const vueHooks = getVueHooks(this)
+          addListeners(this, input, vueHooks)
         })
       }
     }
@@ -234,7 +237,6 @@ export const ValidationProvider = defineComponent({
     return this.slim && children.length <= 1 ? children[0] : h(this.tag, children)
   },
   beforeDestroy() {
-    // cleanup reference.
     this.$_veeObserver.unobserve(this.id)
   },
   activated() {

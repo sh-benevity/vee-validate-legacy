@@ -10,6 +10,7 @@ import {
 } from "../utils/vnode"
 import { h as CreateElement, Component } from "vue"
 import { createValidationCtx, onRenderUpdate, createCommonHandlers, ValidationContext } from "./common"
+import { getVueHooks } from '@/components/hooks';
 
 type ValidationContextMapper = (ctx: ValidationContext) => Record<string, any>
 type ComponentLike = Component | { options: any }
@@ -37,7 +38,7 @@ export function withValidation(component: ComponentLike, mapProps: ValidationCon
     const model = findModel(this.$vnode)
     this._inputEventName = this._inputEventName || getInputEventName(this.$vnode, model)
     const value = findValue(this.$vnode)
-    onRenderUpdate(this, value?.value)
+    onRenderUpdate(this, value?.value, getVueHooks(this))
 
     const { onInput, onBlur, onValidate } = createCommonHandlers(this)
 
