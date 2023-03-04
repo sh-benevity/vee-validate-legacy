@@ -7,7 +7,7 @@ import { RuleContainer } from "../extend"
 export const isTextInput = (vnode: VNode): boolean => {
   const attrs = vnode.props
 
-  // it will fallback to being a text input per browsers spec.
+  // it will fall back to being a text input per browsers spec.
   if (vnode.type === "input" && (!attrs || !attrs.type)) {
     return true
   }
