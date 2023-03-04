@@ -171,9 +171,67 @@ describe("localize", function () {
             value: "1",
           }),
           template: `
+            <div>
+            <ValidationProvider :immediate="true" rules="required|ruleWithoutMessage" v-slot="{ errors }">
+              <input name="MyFancyInputName" v-model="value" type="text">
+              <span id="error">{{ errors[0] }}</span>
+            </ValidationProvider>
+            </div>
+          `,
+        },
+        { global: { components: { ValidationProvider } } }
+      )
+
+      const error = wrapper.find("#error")
+
+      // flush the pending validation.
+      await flushPromises()
+
+      expect(error.text()).toContain("MyFancyInputName is not valid")
+    })
+
+    it("should use id in the default message", async () => {
+      extend("ruleWithoutMessage", () => false)
+
+      const wrapper = mount(
+        {
+          props: {},
+          data: () => ({
+            value: "1",
+          }),
+          template: `
+            <div>
+            <ValidationProvider :immediate="true" rules="required|ruleWithoutMessage" v-slot="{ errors }">
+              <input id="myFancyInputId" v-model="value" type="text">
+              <span id="error">{{ errors[0] }}</span>
+            </ValidationProvider>
+            </div>
+          `,
+        },
+        { global: { components: { ValidationProvider } } }
+      )
+
+      const error = wrapper.find("#error")
+
+      // flush the pending validation.
+      await flushPromises()
+
+      expect(error.text()).toContain("myFancyInputId is not valid")
+    })
+
+    it("should prioritize name in the default message", async () => {
+      extend("ruleWithoutMessage", () => false)
+
+      const wrapper = mount(
+        {
+          props: {},
+          data: () => ({
+            value: "1",
+          }),
+          template: `
         <div>
           <ValidationProvider :immediate="true" rules="required|ruleWithoutMessage" v-slot="{ errors }">
-            <input name="MyFancyInputName" v-model="value" type="text">
+            <input id="myFancyInputId" name="MyFancyInputName" v-model="value" type="text">
             <span id="error">{{ errors[0] }}</span>
           </ValidationProvider>
         </div>

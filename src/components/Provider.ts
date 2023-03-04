@@ -223,7 +223,7 @@ export const ValidationProvider = defineComponent({
           }
 
           if (isHTMLNode(input)) {
-            this.fieldName = input.props.name || input.data?.attrs?.id
+            this.fieldName = input.props?.name || input.props?.id
           }
 
           this._resolvedRules = resolved
