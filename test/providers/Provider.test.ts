@@ -21,7 +21,7 @@ describe("Provider", function () {
         data: () => ({ val: "" }),
         template: `
         <ValidationProvider v-slot="ctx">
-          <input v-model="val" type="text">
+          <input v-model="val" type="text" @blur="console.log('get blurred')">
         </ValidationProvider>
       `,
       },
@@ -58,7 +58,9 @@ describe("Provider", function () {
         template: `
         <ValidationProvider rules="required" v-slot="{ errors, ...rest }">
           <input v-model="value" type="text">
-          <li v-for="(flag, name) in rest" v-if="flag" :id="name">{{ name }}</li>
+          <div v-for="(flag, name) in rest">
+            <li v-if="flag" :id="name">{{ name }}</li>
+          </div>
         </ValidationProvider>
       `,
       },

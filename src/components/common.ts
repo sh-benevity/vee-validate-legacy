@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { VNode } from "vue"
 import { debounce, isCallable, isRefEqual } from "../utils"
 import { InteractionModeFactory, modes } from "../modes"
@@ -13,6 +12,8 @@ import { enableWarn, suppressWarn } from "@/utils/console"
 function shouldValidate(ctx: ProviderInstance, value: string) {
   // when an immediate/initial validation is needed and wasn't done before.
   suppressWarn()
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (!ctx._ignoreImmediate && ctx.immediate) {
     return true
   }
@@ -24,6 +25,8 @@ function shouldValidate(ctx: ProviderInstance, value: string) {
   }
 
   // when it needs validation due to props/cross-fields changes.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (ctx._needsValidation) {
     return true
   }
@@ -80,8 +83,12 @@ export function onRenderUpdate(vm: ProviderInstance, value: any | undefined, vue
   }
 
   const validateNow = shouldValidate(vm, value)
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   vm._needsValidation = false
   vm.value = value
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   vm._ignoreImmediate = true
 
   if (!validateNow) {
@@ -113,10 +120,16 @@ export function computeModeSetting(ctx: ProviderInstance) {
 export function triggerThreadSafeValidation(vm: ProviderInstance) {
   const pendingPromise: Promise<ValidationResult> = vm.validateSilent()
   // avoids race conditions between successive validations.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   vm._pendingValidation = pendingPromise
   return pendingPromise.then((result) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (pendingPromise === vm._pendingValidation) {
       vm.applyResult(result)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       vm._pendingValidation = undefined
     }
 
@@ -126,42 +139,66 @@ export function triggerThreadSafeValidation(vm: ProviderInstance) {
 
 // Creates the common handlers for a validatable context.
 export function createCommonHandlers(vm: ProviderInstance) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (!vm.$veeOnInput) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     vm.$veeOnInput = (e: any) => {
       vm.syncValue(e) // track and keep the value updated.
       vm.setFlags({ dirty: true, pristine: false })
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const onInput = vm.$veeOnInput
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (!vm.$veeOnBlur) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     vm.$veeOnBlur = () => {
       vm.setFlags({ touched: true, untouched: false })
     }
   }
 
   // Blur event listener.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const onBlur = vm.$veeOnBlur
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   let onValidate = vm.$veeHandler
   const mode = computeModeSetting(vm)
 
   // Handle debounce changes.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (!onValidate || vm.$veeDebounce !== vm.debounce) {
     onValidate = debounce(() => {
       vm.$nextTick(() => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         if (!vm._pendingReset) {
           triggerThreadSafeValidation(vm)
         }
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         vm._pendingReset = false
       })
     }, mode.debounce || vm.debounce)
 
-    // Cache the handler so we don't create it each time.
+    // Cache the handler, so we don't create it each time.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     vm.$veeHandler = onValidate
-    // cache the debounced value so we detect if it was changed.
+    // cache the debounced value, so we detect if it was changed.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     vm.$veeDebounce = vm.debounce
   }
 
@@ -173,13 +210,17 @@ export function addListeners(vm: ProviderInstance, node: VNode, vueHooks: VueHoo
   const value = findValue(node)
   // cache the input eventName.
   suppressWarn()
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   vm._inputEventName = vm._inputEventName || getInputEventName(node, findModel(node))
   enableWarn()
   onRenderUpdate(vm, value?.value, vueHooks)
 
   const { onInput, onBlur, onValidate } = createCommonHandlers(vm)
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   addVNodeListener(node, vm._inputEventName, onInput)
-  addVNodeListener(node, "blur", onBlur)
+  addVNodeListener(node, "onBlur", onBlur)
 
   // add the validation listeners.
   vm.normalizedEvents.forEach((evt: string) => {

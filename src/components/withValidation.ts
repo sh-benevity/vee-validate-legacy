@@ -43,7 +43,7 @@ export function withValidation(component: ComponentLike, mapProps: ValidationCon
     const { onInput, onBlur, onValidate } = createCommonHandlers(this)
 
     mergeVNodeListeners(listeners, eventName, onInput)
-    mergeVNodeListeners(listeners, "blur", onBlur)
+    mergeVNodeListeners(listeners, "onBlur", onBlur)
     this.normalizedEvents.forEach((evt: string) => {
       mergeVNodeListeners(listeners, evt, onValidate)
     })

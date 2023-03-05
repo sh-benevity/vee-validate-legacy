@@ -1,5 +1,5 @@
 // @ts-nocheck
-import Vue, { DirectiveBinding, vModelText, VNode } from "vue"
+import Vue, { ComponentPublicInstance, DirectiveBinding, vModelText, VNode } from "vue"
 import { find, includes, isCallable, isNullOrUndefined, isSpecified } from "./index"
 import { normalizeRules } from "./rules"
 import { RuleContainer } from "../extend"
@@ -131,15 +131,11 @@ export function mergeVNodeListeners(obj: any, eventName: string, handler: Functi
 // Adds a listener to a native HTML vnode.
 function addNativeNodeListener(node: VNode, eventName: string, handler: Function): void {
   /* istanbul ignore next */
-  if (!node.data) {
-    node.data = {}
+  if (!node.props) {
+    node.props = {}
   }
 
-  if (isNullOrUndefined(node.data.on)) {
-    node.data.on = {}
-  }
-
-  mergeVNodeListeners(node.data.on, eventName, handler)
+  mergeVNodeListeners(node.props, eventName, handler)
 }
 
 // Adds a listener to a Vue component vnode.
@@ -167,7 +163,7 @@ export function addVNodeListener(vnode: VNode, eventName: string, handler: Funct
 }
 
 // Determines if `change` should be used over `input` for listeners.
-export function getInputEventName(vnode: VNode, model?: VNodeDirective): string {
+export function getInputEventName(vnode: VNode, model?: DirectiveBinding): string {
   // Is a component.
   if (vnode.componentOptions) {
     const { event } = findModelConfig(vnode) || { event: "input" }
@@ -182,7 +178,7 @@ export function getInputEventName(vnode: VNode, model?: VNodeDirective): string 
 
   // is a textual-type input.
   if (isTextInput(vnode)) {
-    return "input"
+    return "onUpdate:modelValue"
   }
 
   return "change"
@@ -268,7 +264,7 @@ export function resolveRules(vnode: VNode) {
   return normalizeRules(rules)
 }
 
-export function normalizeChildren(context: Vue, slotProps: any): VNode[] {
+export function normalizeChildren(context: ComponentPublicInstance, slotProps: any): VNode[] {
   if (context.$slots.default) {
     return context.$slots.default(slotProps) || []
   }
