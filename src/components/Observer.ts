@@ -129,14 +129,8 @@ export const ValidationObserver = defineComponent({
   deactivated() {
     unregister(this)
   },
-  beforeDestroy() {
+  beforeUnmount() {
     unregister(this)
-  },
-  render(h): VNode {
-    const children = normalizeChildren(this, prepareSlotProps(this))
-
-    // @ts-ignore
-    return this.slim && children.length <= 1 ? children[0] : h(this.tag, { on: this.$listeners }, children)
   },
   methods: {
     observe(subscriber: any, kind = "provider") {
@@ -218,6 +212,12 @@ export const ValidationObserver = defineComponent({
         observer.setErrors(errors)
       })
     },
+  },
+  render(h): VNode {
+    const children = normalizeChildren(this, prepareSlotProps(this))
+
+    // @ts-ignore
+    return this.slim && children.length <= 1 ? children[0] : h(this.tag, { on: this.$listeners }, children)
   },
 })
 

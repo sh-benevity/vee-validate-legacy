@@ -115,18 +115,7 @@ export const ValidationProvider = defineComponent({
       default: true,
     },
   },
-  watch: {
-    rules: {
-      deep: true,
-      handler(val: any, oldVal: any) {
-        this._needsValidation = !isEqual(val, oldVal)
-      },
-    },
-  },
   data,
-  beforeCreate() {
-    generateVueHooks(this)
-  },
   computed: {
     fieldDeps(): string[] {
       return Object.keys(this.normalizedRules).reduce((acc: string[], rule: string) => {
@@ -172,6 +161,17 @@ export const ValidationProvider = defineComponent({
       return normalizeRules(this.rules)
     },
   },
+  watch: {
+    rules: {
+      deep: true,
+      handler(val: any, oldVal: any) {
+        this._needsValidation = !isEqual(val, oldVal)
+      },
+    },
+  },
+  beforeCreate() {
+    generateVueHooks(this)
+  },
   mounted() {
     const onLocaleChanged = () => {
       if (!this.flags.validated) {
@@ -204,44 +204,7 @@ export const ValidationProvider = defineComponent({
     const onLocaleChanged = localeChangedMap.get(this)
     EVENT_BUS.removeHook("change:locale", onLocaleChanged!)
   },
-  render(): VNode {
-    this.registerField()
-    const ctx = createValidationCtx(this)
-    const children = normalizeChildren(this, ctx)
-
-    // Automatic v-model detection
-    if (this.detectInput) {
-      const inputs = findInputNodes(children)
-
-      if (inputs.length) {
-        inputs.forEach((input, idx) => {
-          // If the elements are not checkboxes and there are more input nodes
-          if (!includes(["checkbox", "radio"], input.props.type) && idx > 0) {
-            return
-          }
-
-          const resolved = getConfig().useConstraintAttrs ? resolveRules(input) : {}
-          suppressWarn()
-          if (!isEqual(this._resolvedRules, resolved)) {
-            this._needsValidation = true
-          }
-          enableWarn()
-
-          if (isHTMLNode(input)) {
-            this.fieldName = input.props?.name || input.props?.id
-          }
-
-          this._resolvedRules = resolved
-
-          const vueHooks = getVueHooks(this)
-          addListeners(this, input, vueHooks)
-        })
-      }
-    }
-
-    return this.slim && children.length <= 1 ? children[0] : h(this.tag, children)
-  },
-  beforeDestroy() {
+  beforeUnmount() {
     this.$_veeObserver.unobserve(this.id)
   },
   activated() {
@@ -340,6 +303,43 @@ export const ValidationProvider = defineComponent({
       const isRequired = Object.keys(rules).some(RuleContainer.isRequireRule)
       return isRequired
     },
+  },
+  render(): VNode {
+    this.registerField()
+    const ctx = createValidationCtx(this)
+    const children = normalizeChildren(this, ctx)
+
+    // Automatic v-model detection
+    if (this.detectInput) {
+      const inputs = findInputNodes(children)
+
+      if (inputs.length) {
+        inputs.forEach((input, idx) => {
+          // If the elements are not checkboxes and there are more input nodes
+          if (!includes(["checkbox", "radio"], input.props.type) && idx > 0) {
+            return
+          }
+
+          const resolved = getConfig().useConstraintAttrs ? resolveRules(input) : {}
+          suppressWarn()
+          if (!isEqual(this._resolvedRules, resolved)) {
+            this._needsValidation = true
+          }
+          enableWarn()
+
+          if (isHTMLNode(input)) {
+            this.fieldName = input.props?.name || input.props?.id
+          }
+
+          this._resolvedRules = resolved
+
+          const vueHooks = getVueHooks(this)
+          addListeners(this, input, vueHooks)
+        })
+      }
+    }
+
+    return this.slim && children.length <= 1 ? children[0] : h(this.tag, children)
   },
 })
 
