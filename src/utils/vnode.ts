@@ -1,8 +1,9 @@
 // @ts-nocheck
-import Vue, { ComponentPublicInstance, DirectiveBinding, vModelText, VNode } from "vue"
+import Vue, { ComponentPublicInstance, DirectiveBinding, vModelText, vModelDynamic, VNode } from "vue"
 import { find, includes, isCallable, isNullOrUndefined, isSpecified } from "./index"
 import { normalizeRules } from "./rules"
 import { RuleContainer } from "../extend"
+import { VModel } from '@/types';
 
 export const isTextInput = (vnode: VNode): boolean => {
   const attrs = vnode.props
@@ -26,12 +27,18 @@ export const isTextInput = (vnode: VNode): boolean => {
 // };
 
 // Gets the model object on the vnode.
-export function findModel(vnode: VNode): DirectiveBinding | undefined {
-  if (!vnode.dirs) {
+export function findModel(vnode: VNode): DirectiveBinding | VModel | undefined {
+  if (!vnode.dirs && !vnode?.props?.["onUpdate:modelValue"]) {
     return undefined
   }
 
-  return find(vnode.dirs, (d) => d.dir === vModelText)
+  if (vnode.dirs && vnode.dirs.length > 0) {
+    return find(vnode.dirs, (d) => d.dir === vModelText)
+  }
+
+  if (vnode.props["onUpdate:modelValue"]) {
+    return { value: vnode.props.modelValue, "onUpdate:modelValue": vnode.props["onUpdate:modelValue"] }
+  }
 }
 
 export function findValue(vnode: VNode): { value: any } | undefined {
@@ -165,15 +172,17 @@ export function addVNodeListener(vnode: VNode, eventName: string, handler: Funct
 // Determines if `change` should be used over `input` for listeners.
 export function getInputEventName(vnode: VNode, model?: DirectiveBinding): string {
   // Is a component.
-  if (vnode.componentOptions) {
-    const { event } = findModelConfig(vnode) || { event: "input" }
+  if (typeof vnode.type !== "string") {
+    const { event } = findModelConfig(vnode) || { event: "onUpdate:modelValue" }
 
-    return event || "input"
+    return event || "onUpdate:modelValue"
   }
 
   // Lazy Models typically use change event
+  const vmt = vModelText
+  // const model = findModel(vnode)
   if (model?.modifiers?.lazy) {
-    return "change"
+    return "onChange"
   }
 
   // is a textual-type input.
@@ -181,7 +190,7 @@ export function getInputEventName(vnode: VNode, model?: DirectiveBinding): strin
     return "onUpdate:modelValue"
   }
 
-  return "change"
+  return "onChange"
 }
 
 export function isHTMLNode(node: VNode) {

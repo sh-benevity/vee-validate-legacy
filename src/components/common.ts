@@ -139,6 +139,7 @@ export function triggerThreadSafeValidation(vm: ProviderInstance) {
 
 // Creates the common handlers for a validatable context.
 export function createCommonHandlers(vm: ProviderInstance) {
+  suppressWarn()
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   if (!vm.$veeOnInput) {
@@ -149,11 +150,13 @@ export function createCommonHandlers(vm: ProviderInstance) {
       vm.setFlags({ dirty: true, pristine: false })
     }
   }
+  enableWarn()
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const onInput = vm.$veeOnInput
 
+  suppressWarn()
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   if (!vm.$veeOnBlur) {
@@ -163,15 +166,18 @@ export function createCommonHandlers(vm: ProviderInstance) {
       vm.setFlags({ touched: true, untouched: false })
     }
   }
+  enableWarn()
 
   // Blur event listener.
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const onBlur = vm.$veeOnBlur
 
+  suppressWarn()
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   let onValidate = vm.$veeHandler
+  enableWarn()
   const mode = computeModeSetting(vm)
 
   // Handle debounce changes.

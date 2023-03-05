@@ -101,7 +101,7 @@ describe("Provider", function () {
         components: {
           CustomInput: {
             name: "CustomInput",
-            props: ["value"],
+            props: ["modelValue"],
             template: `
               <p id="input">{{ value }}</p>
             `,
@@ -121,7 +121,7 @@ describe("Provider", function () {
     const changedSpan = wrapper.find("#changed")
     input.vm.$emit("blur")
     await flushPromises()
-    input.vm.$emit("input", newValue)
+    input.vm.$emit("update:modelValue", newValue)
     await flushPromises()
     expect(changedSpan.text()).toContain(expectedFlag)
   })
@@ -147,7 +147,7 @@ describe("Provider", function () {
     const error = wrapper.find("#error")
 
     input.element.value = ""
-    input.trigger("input")
+    input.trigger("update:modelValue")
     await flushPromises()
     // did not validate on input.
     expect(error.text()).toBe("")
@@ -189,12 +189,12 @@ describe("Provider", function () {
     const select = wrapper.find("select")
     const error = wrapper.find("#error")
 
-    select.trigger("input")
+    select.trigger("update:modelValue")
     await flushPromises()
     // did not validate on input.
     expect(error.text()).toBe("")
 
-    select.trigger("change")
+    select.trigger("onChange")
     select.element.value = ""
     await flushPromises()
     // validation triggered on change.

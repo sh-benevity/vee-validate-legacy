@@ -98,3 +98,8 @@ export type VNodeWithVeeContext = VNode & {
     $_veeObserver?: VeeObserver
   }
 }
+
+export interface VModel {
+  value: any
+  "onUpdate:modelValue": Function
+}
