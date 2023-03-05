@@ -1,9 +1,17 @@
 // @ts-nocheck
-import Vue, { ComponentPublicInstance, DirectiveBinding, vModelText, vModelDynamic, VNode } from "vue"
+import Vue, {
+  ComponentPublicInstance,
+  DirectiveBinding,
+  vModelText,
+  vModelCheckbox,
+  vModelRadio,
+  vModelSelect,
+  VNode,
+} from "vue"
 import { find, includes, isCallable, isNullOrUndefined, isSpecified } from "./index"
 import { normalizeRules } from "./rules"
 import { RuleContainer } from "../extend"
-import { VModel } from '@/types';
+import { VModel } from "@/types"
 
 export const isTextInput = (vnode: VNode): boolean => {
   const attrs = vnode.props
@@ -33,7 +41,7 @@ export function findModel(vnode: VNode): DirectiveBinding | VModel | undefined {
   }
 
   if (vnode.dirs && vnode.dirs.length > 0) {
-    return find(vnode.dirs, (d) => d.dir === vModelText)
+    return find(vnode.dirs, (d) => [vModelText, vModelCheckbox, vModelRadio, vModelSelect].includes(d.dir))
   }
 
   if (vnode.props["onUpdate:modelValue"]) {

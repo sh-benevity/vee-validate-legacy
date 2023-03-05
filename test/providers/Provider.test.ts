@@ -194,7 +194,7 @@ describe("Provider", function () {
     // did not validate on input.
     expect(error.text()).toBe("")
 
-    select.trigger("onChange")
+    select.trigger("change")
     select.element.value = ""
     await flushPromises()
     // validation triggered on change.
@@ -398,7 +398,7 @@ describe("Provider", function () {
             props: ["value"],
             template: `
             <div>
-              <input id="input" :value="value" @input="$emit('input', $event.target.value)">
+              <input id="input" :modelValue="value" @onUpdate:modelValue="$emit('input', $event.target.value)">
             </div>
           `,
           },
