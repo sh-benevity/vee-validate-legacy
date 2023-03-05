@@ -1,7 +1,8 @@
-// noinspection VueMissingComponentImportInspection
+// noinspection VueMissingComponentImportInspection,ES6MissingAwait
 
 import { describe, expect, it } from "vitest"
 
+import { nextTick } from "vue"
 import { mount } from "@vue/test-utils"
 import flushPromises from "flush-promises"
 import { configure, extend, ValidationObserver, ValidationProvider, withValidation } from "@/index.full"
@@ -395,10 +396,16 @@ describe("Provider", function () {
         }),
         components: {
           TextInput: {
-            props: ["value"],
+            props: {
+              modelValue: {
+                type: String,
+                required: true,
+              },
+            },
+            emits: ["update:modelValue"],
             template: `
             <div>
-              <input id="input" :modelValue="value" @onUpdate:modelValue="$emit('input', $event.target.value)">
+              <input id="input" :modelValue="modelValue" @update:modelValue="$emit('update:modelValue', $event.target.value)">
             </div>
           `,
           },
@@ -422,6 +429,7 @@ describe("Provider", function () {
 
     input.setValue("")
     await flushPromises()
+    await nextTick()
 
     expect(error.text()).toBe(DEFAULT_REQUIRED_MESSAGE)
 

@@ -1,4 +1,4 @@
-import { VNode } from "vue"
+import { nextTick, VNode } from "vue"
 import { debounce, isCallable, isRefEqual } from "../utils"
 import { InteractionModeFactory, modes } from "../modes"
 import { KnownKeys, ProviderInstance, ValidationFlags, ValidationResult } from "../types"
@@ -185,7 +185,7 @@ export function createCommonHandlers(vm: ProviderInstance) {
   // @ts-ignore
   if (!onValidate || vm.$veeDebounce !== vm.debounce) {
     onValidate = debounce(() => {
-      vm.$nextTick(() => {
+      nextTick(() => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (!vm._pendingReset) {

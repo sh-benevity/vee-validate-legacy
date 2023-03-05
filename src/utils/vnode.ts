@@ -156,20 +156,15 @@ function addNativeNodeListener(node: VNode, eventName: string, handler: Function
 // Adds a listener to a Vue component vnode.
 function addComponentNodeListener(node: VNode, eventName: string, handler: Function): void {
   /* istanbul ignore next */
-  if (!node.componentOptions) {
-    return
+  if (!node.props) {
+    node.props = {}
   }
 
-  /* istanbul ignore next */
-  if (!node.componentOptions.listeners) {
-    node.componentOptions.listeners = {}
-  }
-
-  mergeVNodeListeners(node.componentOptions.listeners, eventName, handler)
+  mergeVNodeListeners(node.props, eventName, handler)
 }
 
 export function addVNodeListener(vnode: VNode, eventName: string, handler: Function): void {
-  if (vnode.componentOptions) {
+  if (typeof vnode.type === "object") {
     addComponentNodeListener(vnode, eventName, handler)
     return
   }
