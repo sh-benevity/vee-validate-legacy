@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest"
+
 import { validate } from "@/validate"
 import { extend } from "@/extend"
 import { between, confirmed, excluded } from "@/rules"
@@ -23,7 +25,7 @@ describe("targets", function () {
       expect(result.errors[0]).toEqual("Bar must match Foo")
     })
 
-    test("uses target field key, if target field name not supplied in options", async function () {
+    it("should use target field key, if target field name not supplied in options", async function () {
       const values = { foo: 10, bar: 20 }
       const rules = "confirmed:foo"
       const options = {

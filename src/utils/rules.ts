@@ -1,6 +1,6 @@
 import { Locator, RuleParamConfig } from "../types"
 import { RuleContainer } from "../extend"
-import { includes, isObject, warn, isLocator } from "./index"
+import { includes, isLocator, isObject, warn } from "./index"
 
 /**
  * Normalizes the given rules expression.

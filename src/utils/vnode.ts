@@ -1,6 +1,6 @@
 // @ts-nocheck
-import Vue, { VNode, DirectiveBinding, vModelText } from "vue"
-import { find, isCallable, isNullOrUndefined, includes, isSpecified } from "./index"
+import Vue, { DirectiveBinding, vModelText, VNode } from "vue"
+import { find, includes, isCallable, isNullOrUndefined, isSpecified } from "./index"
 import { normalizeRules } from "./rules"
 import { RuleContainer } from "../extend"
 

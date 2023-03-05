@@ -1,5 +1,5 @@
 import { isNullOrUndefined } from "../utils"
-import { RuleParamSchema, ValidationRuleFunction, StringOrNumber } from "../types"
+import { RuleParamSchema, StringOrNumber, ValidationRuleFunction } from "../types"
 
 const validate: ValidationRuleFunction = (value: StringOrNumber | StringOrNumber[], { max }: Record<string, any>) => {
   if (isNullOrUndefined(value) || value === "") {

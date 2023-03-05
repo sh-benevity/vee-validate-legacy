@@ -1,5 +1,8 @@
+import { expect, test } from "vitest"
+
 import { validate } from "@/rules/image"
 import helpers from "./../helpers"
+
 test("validates image files", () => {
   const validFiles = [
     helpers.file("file.gif", "image/gif"),

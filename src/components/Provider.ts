@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { defineComponent, VNode, h } from "vue"
+import { defineComponent, h, VNode } from "vue"
 import isEqual from "fast-deep-equal"
 
 import { extractLocators, normalizeRules } from "../utils/rules"
@@ -9,7 +9,7 @@ import { createFlags, includes, isCallable, isLocator, isNullOrUndefined } from 
 import { getConfig, ValidationClassMap } from "../config"
 import { validate } from "../validate"
 import { RuleContainer } from "../extend"
-import { ProviderInstance, ValidationFlags, ValidationResult, VeeObserver, VNodeWithVeeContext } from "../types"
+import { ProviderInstance, ValidationFlags, ValidationResult, VeeObserver } from "../types"
 import { addListeners, computeModeSetting, createValidationCtx, triggerThreadSafeValidation } from "./common"
 import { EVENT_BUS } from "../localeChanged"
 import { generateVueHooks, getVueHooks } from "@/components/hooks"

@@ -1,3 +1,5 @@
+import { expect, test } from "vitest"
+
 import { validate } from "@/rules/required"
 
 const valid = ["asjdj", 0, "undefined", "null", "s ", true, false]

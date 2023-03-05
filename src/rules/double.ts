@@ -1,4 +1,4 @@
-import { StringOrNumber, RuleParamSchema } from "../types"
+import { RuleParamSchema, StringOrNumber } from "../types"
 
 type Separator = "dot" | "comma"
 

@@ -1,6 +1,8 @@
+import { describe, expect, it } from "vitest"
+
 import { mount } from "@vue/test-utils"
 import flushPromises from "flush-promises"
-import { ValidationProvider, localize, extend } from "@/index.full"
+import { extend, localize, ValidationProvider } from "@/index.full"
 import { createI18n } from "vue-i18n"
 
 const i18n = createI18n({
@@ -92,7 +94,7 @@ describe("localize", function () {
     const errors = wrapper.findAll(".error")
     expect(errors).toHaveLength(2)
 
-    expect(errors.at(0)?.text()).toContain("WRONG!")
+    expect(errors.at(0)?.text()).toEqual("WRONG!")
     expect(errors.at(1)?.text()).toContain("The {field} field is required")
   })
 

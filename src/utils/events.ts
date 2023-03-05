@@ -1,4 +1,4 @@
-import { isCallable, toArray, isNaN } from "./index"
+import { isCallable, isNaN, toArray } from "./index"
 
 export const isEvent = (evt: any): evt is Event => {
   if (!evt) {

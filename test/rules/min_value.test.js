@@ -1,3 +1,5 @@
+import { expect, test } from "vitest"
+
 import { validate } from "@/rules/min_value"
 
 const valid = [-1, 0, "5"]

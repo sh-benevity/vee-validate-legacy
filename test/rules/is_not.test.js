@@ -1,3 +1,5 @@
+import { expect, test } from "vitest"
+
 import { validate } from "@/rules/is_not"
 
 test("checks if the value does not match another", () => {

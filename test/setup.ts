@@ -1,5 +1,9 @@
+import { expect } from "vitest"
+
+import { VueWrapper } from "@vue/test-utils"
+
 expect.extend({
-  toHaveElement(wrapper, selector) {
+  toHaveElement(wrapper: VueWrapper, selector) {
     const exists = wrapper.find(selector).exists()
 
     return {
@@ -13,7 +17,7 @@ export {}
 declare global {
   namespace jest {
     interface Matchers<R> {
-      toHaveElement(wrapper, selector): R
+      toHaveElement(selector): R
     }
   }
 }

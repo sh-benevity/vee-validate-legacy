@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { defineComponent, VNode } from "vue"
 import { createFlags, debounce, findIndex, values } from "../utils"
 import { KnownKeys, ValidationFlags, ValidationResult } from "../types"

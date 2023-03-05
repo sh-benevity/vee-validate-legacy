@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest"
+
 import { validate } from "@/validate"
 import { extend } from "@/extend"
 import { numeric } from "@/rules"

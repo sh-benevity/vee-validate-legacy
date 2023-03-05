@@ -1,4 +1,4 @@
-import { isCallable, merge, interpolate } from "./utils"
+import { interpolate, isCallable, merge } from "./utils"
 import { ValidationMessageTemplate } from "./types"
 import { setConfig } from "./config"
 import { localeChanged } from "./localeChanged"

@@ -3,13 +3,13 @@ import { identity } from "../utils"
 import {
   findModel,
   findModelConfig,
-  mergeVNodeListeners,
-  getInputEventName,
-  normalizeSlots,
   findValue,
+  getInputEventName,
+  mergeVNodeListeners,
+  normalizeSlots,
 } from "../utils/vnode"
-import { h as CreateElement, Component } from "vue"
-import { createValidationCtx, onRenderUpdate, createCommonHandlers, ValidationContext } from "./common"
+import { Component, h as CreateElement } from "vue"
+import { createCommonHandlers, createValidationCtx, onRenderUpdate, ValidationContext } from "./common"
 import { getVueHooks } from "@/components/hooks"
 
 type ValidationContextMapper = (ctx: ValidationContext) => Record<string, any>

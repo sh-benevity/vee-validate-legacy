@@ -1,3 +1,5 @@
+import { expect, test } from "vitest"
+
 import { validate } from "@/rules/numeric"
 
 const valid = ["1234567890", 123, "٠١٢٣٤", "٠١٢٣٤٥٦٧٨٩"]

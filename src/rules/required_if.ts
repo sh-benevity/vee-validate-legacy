@@ -1,4 +1,4 @@
-import { isEmptyArray, includes } from "../utils"
+import { includes, isEmptyArray } from "../utils"
 import { RuleParamSchema } from "../types"
 
 const testEmpty = (value: any) =>

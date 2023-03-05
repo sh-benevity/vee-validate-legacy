@@ -1,3 +1,5 @@
+import { expect, test } from "vitest"
+
 import { validate } from "@/rules/digits"
 
 const valid = ["123", "456", "789", "012", ["012", "789"]]

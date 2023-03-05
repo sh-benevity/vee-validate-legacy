@@ -1,3 +1,5 @@
+import { expect, test } from "vitest"
+
 import { validate } from "@/rules/oneOf"
 
 test("validates that the value exists within a list", () => {

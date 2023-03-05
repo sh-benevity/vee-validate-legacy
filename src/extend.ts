@@ -1,4 +1,4 @@
-import { ValidationRule, ValidationRuleSchema, RuleParamConfig } from "./types"
+import { RuleParamConfig, ValidationRule, ValidationRuleSchema } from "./types"
 import { isCallable, merge } from "./utils"
 
 interface NormalizedRuleSchema extends ValidationRuleSchema {

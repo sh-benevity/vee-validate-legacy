@@ -1,3 +1,5 @@
+import { expect, test } from "vitest"
+
 import { validate } from "@/rules/confirmed"
 
 test("validates a field confirmation", () => {

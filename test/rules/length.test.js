@@ -1,3 +1,5 @@
+import { expect, test } from "vitest"
+
 import { validate } from "@/rules/length"
 
 test("validates number of characters in a string", () => {
