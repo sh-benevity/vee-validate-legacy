@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Vue, {
   ComponentPublicInstance,
   DirectiveBinding,
@@ -44,6 +43,8 @@ export function findModel(vnode: VNode): DirectiveBinding | VModel | undefined {
     return find(vnode.dirs, (d) => [vModelText, vModelCheckbox, vModelRadio, vModelSelect].includes(d.dir))
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const propKeys = Object.keys(vnode.props)
   if (!propKeys.includes("onUpdate:modelValue") && propKeys.filter((key) => key.startsWith("onUpdate:")).length != 1) {
     return undefined
@@ -52,9 +53,17 @@ export function findModel(vnode: VNode): DirectiveBinding | VModel | undefined {
   const modelKey = propKeys.includes("onUpdate:modelValue")
     ? "modelValue"
     : propKeys.filter((key) => key.startsWith("onUpdate:"))[0].replace(/^onUpdate:/g, "")
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (vnode.props[`onUpdate:${modelKey}`]) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const model = { value: vnode.props[modelKey] }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     model[`onUpdate:${modelKey}`] = vnode.props[`onUpdate:${modelKey}`]
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return model
   }
 }
@@ -67,12 +76,20 @@ export function findValue(vnode: VNode): { value: any } | undefined {
 
   const config = findModelConfig(vnode)
   const prop = config?.prop || "value"
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (vnode.componentOptions?.propsData && prop in vnode.componentOptions.propsData) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const propsDataWithValue = vnode.componentOptions.propsData as any
     return { value: propsDataWithValue[prop] }
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (vnode.data?.domProps && "value" in vnode.data.domProps) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return { value: vnode.data.domProps.value }
   }
 
@@ -85,11 +102,16 @@ function extractChildren(vnode: VNode | VNode[]): VNode[] {
   }
 
   if (Array.isArray(vnode.children)) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return vnode.children
   }
 
-  /* istanbul ignore next */
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (vnode.componentOptions && Array.isArray(vnode.componentOptions.children)) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return vnode.componentOptions.children
   }
 
@@ -199,8 +221,6 @@ export function getInputEventName(vnode: VNode, model?: DirectiveBinding): strin
   }
 
   // Lazy Models typically use change event
-  const vmt = vModelText
-  // const model = findModel(vnode)
   if (model?.modifiers?.lazy) {
     return "onChange"
   }
@@ -218,16 +238,24 @@ export function isHTMLNode(node: VNode) {
 }
 
 // TODO: Type this one properly.
-export function normalizeSlots(slots: any, ctx: Vue): VNode[] {
+export function normalizeSlots(slots: any, ctx: VNode): VNode[] {
   const acc: VNode[] = []
 
   return Object.keys(slots).reduce((arr, key): VNode[] => {
     slots[key].forEach((vnode: VNode): void => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       if (!vnode.context) {
         slots[key].context = ctx
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         if (!vnode.data) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           vnode.data = {}
         }
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         vnode.data.slot = key
       }
     })
