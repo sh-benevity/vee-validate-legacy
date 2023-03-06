@@ -2,10 +2,10 @@
 import Vue, {
   ComponentPublicInstance,
   DirectiveBinding,
-  vModelText,
   vModelCheckbox,
   vModelRadio,
   vModelSelect,
+  vModelText,
   VNode,
 } from "vue"
 import { find, includes, isCallable, isNullOrUndefined, isSpecified } from "./index"
@@ -36,7 +36,7 @@ export const isTextInput = (vnode: VNode): boolean => {
 
 // Gets the model object on the vnode.
 export function findModel(vnode: VNode): DirectiveBinding | VModel | undefined {
-  if (!vnode.dirs && !vnode?.props?.["onUpdate:modelValue"]) {
+  if (!vnode.dirs && !vnode.props) {
     return undefined
   }
 
@@ -44,8 +44,18 @@ export function findModel(vnode: VNode): DirectiveBinding | VModel | undefined {
     return find(vnode.dirs, (d) => [vModelText, vModelCheckbox, vModelRadio, vModelSelect].includes(d.dir))
   }
 
-  if (vnode.props["onUpdate:modelValue"]) {
-    return { value: vnode.props.modelValue, "onUpdate:modelValue": vnode.props["onUpdate:modelValue"] }
+  const propKeys = Object.keys(vnode.props)
+  if (!propKeys.includes("onUpdate:modelValue") && propKeys.filter((key) => key.startsWith("onUpdate:")).length != 1) {
+    return undefined
+  }
+
+  const modelKey = propKeys.includes("onUpdate:modelValue")
+    ? "modelValue"
+    : propKeys.filter((key) => key.startsWith("onUpdate:"))[0].replace(/^onUpdate:/g, "")
+  if (vnode.props[`onUpdate:${modelKey}`]) {
+    const model = { value: vnode.props[modelKey] }
+    model[`onUpdate:${modelKey}`] = vnode.props[`onUpdate:${modelKey}`]
+    return model
   }
 }
 
@@ -106,12 +116,19 @@ export function findInputNodes(vnode: VNode | VNode[]): VNode[] {
 // Resolves v-model config if exists.
 export function findModelConfig(vnode: VNode): { prop: string; event: string } | null {
   /* istanbul ignore next */
-  if (!vnode.componentOptions) {
+  if (!vnode.props) {
     return null
   }
 
-  // This is also not typed in the standard Vue TS.
-  return (vnode.componentOptions.Ctor as any).options.model
+  const propKeys = Object.keys(vnode.props)
+  if (!propKeys.includes("onUpdate:modelValue") && propKeys.filter((key) => key.startsWith("onUpdate:")).length != 1) {
+    return null
+  }
+
+  const modelKey = propKeys.includes("onUpdate:modelValue")
+    ? "modelValue"
+    : propKeys.filter((key) => key.startsWith("onUpdate:"))[0].replace(/^onUpdate:/g, "")
+  return { prop: modelKey, event: `onUpdate:${modelKey}` }
 }
 
 // Adds a listener to vnode listener object.

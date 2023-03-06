@@ -405,7 +405,7 @@ describe("Provider", function () {
             emits: ["update:modelValue"],
             template: `
             <div>
-              <input id="input" :modelValue="modelValue" @update:modelValue="$emit('update:modelValue', $event.target.value)">
+              <input id="input" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)">
             </div>
           `,
           },
@@ -438,7 +438,7 @@ describe("Provider", function () {
     expect(error.text()).toBe("")
   })
 
-  it("should validate components on configured model event", async () => {
+  it("should validate components on custom model", async () => {
     const wrapper = mount(
       {
         props: {},
@@ -447,60 +447,15 @@ describe("Provider", function () {
         }),
         components: {
           TextInput: {
-            model: {
-              event: "change",
-            },
-            props: ["value"],
-            template: `<input :value="value" @change="$emit('change', $event.target.value)">`,
-          },
-        },
-        template: `
-        <div>
-          <ValidationProvider rules="required" v-slot="{ errors }">
-            <TextInput v-model="value" ref="input"></TextInput>
-            <span ref="error">{{ errors[0] }}</span>
-          </ValidationProvider>
-        </div>
-      `,
-      },
-      { global: { components: { ValidationProvider } } }
-    )
-
-    const error = wrapper.findComponent({ ref: "error" })
-    const input = wrapper.findComponent({ ref: "input" })
-
-    expect(error.text()).toBe("")
-    input.vm.$emit("change", "")
-    await flushPromises()
-    expect(error.text()).toBe(DEFAULT_REQUIRED_MESSAGE)
-
-    input.vm.$emit("change", "txt")
-    await flushPromises()
-    expect(error.text()).toBe("")
-  })
-
-  // #4160
-  it("should validate components on configured model prop", async () => {
-    const wrapper = mount(
-      {
-        props: {},
-        data: () => ({
-          value: "",
-        }),
-        components: {
-          TextInput: {
-            model: {
-              prop: "test",
-            },
             props: ["test"],
-            template: `<input :value="test" @change="$emit('input', $event.target.value)">`,
+            template: `<input :value="test" @change="$emit('update:test', $event.target.value)" />`,
           },
         },
         template: `
         <div>
           <ValidationProvider rules="required" v-slot="{ errors }">
-            <TextInput v-model="value" ref="input"></TextInput>
-            <span ref="error">{{ errors[0] }}</span>
+            <TextInput v-model:test="value" ref="input"></TextInput>
+            <span id="error">{{ errors[0] }}</span>
           </ValidationProvider>
         </div>
       `,
@@ -508,15 +463,15 @@ describe("Provider", function () {
       { global: { components: { ValidationProvider } } }
     )
 
-    const error = wrapper.findComponent({ ref: "error" })
+    const error = wrapper.find("#error")
     const input = wrapper.findComponent({ ref: "input" })
 
     expect(error.text()).toBe("")
-    input.vm.$emit("input", "")
+    input.vm.$emit("update:test", "")
     await flushPromises()
     expect(error.text()).toBe(DEFAULT_REQUIRED_MESSAGE)
 
-    input.vm.$emit("input", "txt")
+    input.vm.$emit("update:test", "txt")
     await flushPromises()
     expect(error.text()).toBe("")
   })
