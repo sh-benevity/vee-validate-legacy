@@ -1,4 +1,4 @@
-import Vue, {
+import {
   ComponentPublicInstance,
   DirectiveBinding,
   vModelCheckbox,
