@@ -1,4 +1,4 @@
-// noinspection VueMissingComponentImportInspection,ES6MissingAwait
+// noinspection VueMissingComponentImportInspection,ES6MissingAwait,ES6UnusedImports
 
 import { describe, expect, it } from "vitest"
 
@@ -9,9 +9,9 @@ import { configure, extend, ValidationObserver, ValidationProvider, withValidati
 import InputWithoutValidation from "./components/InputWithoutValidation.vue"
 import InputWithSlot from "./components/InputWithSlot.vue"
 import ModelComp from "./../helpers/ModelComp"
-// noinspection ES6UnusedImports
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { template } from "@babel/core"
-import { ObserverInstance } from '@/types'; // eslint-disable-line @typescript-eslint/no-unused-vars
+import { ObserverInstance } from "@/types"
 
 const DEFAULT_REQUIRED_MESSAGE = "The {field} field is required"
 
