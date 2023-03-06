@@ -611,12 +611,11 @@ describe("Provider", function () {
     // @ts-ignore
     const providersMap = wrapper.vm.$_veeObserver.refs
     expect(providersMap.named).toBe(wrapper.vm.$refs.provider)
-    wrapper.destroy()
+    wrapper.unmount()
     expect(providersMap.named).toBeUndefined()
   })
 
   it("should create HOCs from other components", async () => {
-    const a = InputWithValidation
     const InputWithValidation = withValidation(InputWithoutValidation)
 
     const wrapper = mount(
@@ -632,13 +631,15 @@ describe("Provider", function () {
           InputWithValidation,
         },
       },
-      { global: { components: { ValidationProvider } } }
+      { global: { components: { ValidationProvider, InputWithValidation } } }
     )
 
     const error = wrapper.find("#error")
     const input = wrapper.find("#input")
 
     expect(error.text()).toBe("")
+    input.setValue("a")
+    await flushPromises()
     input.setValue("")
     await flushPromises()
 
@@ -686,10 +687,10 @@ describe("Provider", function () {
         }),
         components: {
           TextInput: {
-            props: ["value"],
+            props: ["modelValue"],
             template: `
             <div>
-              <input id="input" :value="value" @input="$emit('input', $event.target.value)">
+              <input id="input" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)">
             </div>
           `,
           },
@@ -984,7 +985,7 @@ describe("Provider", function () {
         </ValidationObserver>
       `,
       },
-      { global: { components: { ValidationProvider } } }
+      { global: { components: { ValidationProvider, ValidationObserver } } }
     )
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

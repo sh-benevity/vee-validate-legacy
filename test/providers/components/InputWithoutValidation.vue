@@ -6,7 +6,7 @@
     name="first"
     placeholder="First"
     autofocus
-    @input="$emit('input', $event.target.value)"
+    @input="$emit('update:modelValue', $event.target.value)"
   />
   <span id="error">{{ errors && errors[0] }}</span>
 </template>
@@ -19,6 +19,6 @@ export default defineComponent({
   props: {
     errors: { type: Array, default: null },
   },
-  emits: ["input"],
+  emits: ["update:modelValue"],
 })
 </script>

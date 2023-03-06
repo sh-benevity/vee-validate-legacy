@@ -1,5 +1,4 @@
-// @ts-nocheck
-import { defineComponent, VNode } from "vue"
+import { defineComponent, VNode, h } from "vue"
 import { createFlags, debounce, findIndex, values } from "../utils"
 import { KnownKeys, ValidationFlags, ValidationResult } from "../types"
 import { ValidationProvider } from "./Provider"
@@ -72,11 +71,15 @@ export const ValidationObserver = defineComponent({
     $_veeObserver: {
       from: "$_veeObserver",
       default() {
-        if (!this.$vnode.context.$_veeObserver) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (!this.$.vnode.ctx.ctx.$_veeObserver) {
           return null
         }
 
-        return this.$vnode.context.$_veeObserver
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        return this.$.vnode.ctx.ctx.$_veeObserver
       },
     },
   },
@@ -149,8 +152,7 @@ export const ValidationObserver = defineComponent({
           return
         }
 
-        // @ts-ignore
-        this.$delete(this.refs, id)
+        delete this.refs.id
         return
       }
 
@@ -205,7 +207,6 @@ export const ValidationObserver = defineComponent({
         let errorArr = errors[key] || []
         errorArr = typeof errorArr === "string" ? [errorArr] : errorArr
 
-        // @ts-ignore
         provider.setErrors(errorArr)
       })
 
@@ -214,24 +215,33 @@ export const ValidationObserver = defineComponent({
       })
     },
   },
-  render(h): VNode {
+  render(): VNode {
     const children = normalizeChildren(this, prepareSlotProps(this))
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    return this.slim && children.length <= 1 ? children[0] : h(this.tag, { on: this.$listeners }, children)
+    return this.slim && children.length <= 1 ? children[0] : h(this.tag, this.props, children)
   },
 })
 
 type ObserverInstance = InstanceType<typeof ValidationObserver>
 
 function unregister(vm: ObserverInstance) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (vm.$_veeObserver) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     vm.$_veeObserver.unobserve(vm.id, "observer")
   }
 }
 
 function register(vm: ObserverInstance) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (vm.$_veeObserver) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     vm.$_veeObserver.observe(vm, "observer")
   }
 }
@@ -287,6 +297,7 @@ function computeObserverState(this: ObserverInstance) {
   }
 
   FLAGS_STRATEGIES.forEach(([flag, method]) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     flags[flag] = vms[method]((vm) => vm.flags[flag])
   })

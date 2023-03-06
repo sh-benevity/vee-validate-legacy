@@ -1,7 +1,10 @@
 import { App, VNode } from "vue"
+import { ValidationObserver } from "./components/Observer"
 import { ValidationProvider } from "./components/Provider"
 
 export type ProviderInstance = InstanceType<typeof ValidationProvider>
+
+export type ObserverInstance = InstanceType<typeof ValidationObserver>
 
 export interface VeeObserver {
   refs: Record<string, ProviderInstance>
