@@ -83,13 +83,13 @@ describe("Observer", function () {
       { global: { components: { ValidationObserver, ValidationProvider } } }
     )
 
+    const obs = wrapper.vm.$refs.obs as ObserverInstance
+
     const error = wrapper.find("#error")
     await flush()
     expect(error.text()).toBe("")
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    await wrapper.vm.$refs.obs.validate()
+    await obs.validate()
     await flush()
 
     expect(error.text()).toBe(DEFAULT_REQUIRED_MESSAGE)
@@ -156,7 +156,7 @@ describe("Observer", function () {
       { global: { components: { ValidationObserver, ValidationProvider } } }
     )
 
-    const obs = wrapper.vm.$refs.obs as typeof ValidationObserver
+    const obs = wrapper.vm.$refs.obs as ObserverInstance
     expect(obs.refs).toHaveProperty("id")
 
     wrapper.unmount()

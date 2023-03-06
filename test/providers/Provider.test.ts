@@ -10,7 +10,8 @@ import InputWithoutValidation from "./components/InputWithoutValidation.vue"
 import InputWithSlot from "./components/InputWithSlot.vue"
 import ModelComp from "./../helpers/ModelComp"
 // noinspection ES6UnusedImports
-import { template } from "@babel/core" // eslint-disable-line @typescript-eslint/no-unused-vars
+import { template } from "@babel/core"
+import { ObserverInstance } from '@/types'; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 const DEFAULT_REQUIRED_MESSAGE = "The {field} field is required"
 
@@ -988,9 +989,9 @@ describe("Provider", function () {
       { global: { components: { ValidationProvider, ValidationObserver } } }
     )
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    await wrapper.vm.$refs.obs.validate()
+    const obs = wrapper.vm.$refs.obs as ObserverInstance
+
+    await obs.validate()
 
     const error = wrapper.find("#error")
     expect(error.text()).toBe("")
