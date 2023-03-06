@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "prepack": "unbuild",
+    "build": "unbuild",
+    "prepack": "yarn run build",
     "lint": "eslint . --fix"
   },
   "main": "./dist/index.mjs",
