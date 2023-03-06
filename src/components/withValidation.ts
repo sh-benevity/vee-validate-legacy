@@ -37,6 +37,8 @@ export function withValidation(component: ComponentLike, mapProps: ValidationCon
 
     const model = findModel(this.$.vnode)
     suppressWarn()
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     this._inputEventName = this._inputEventName || getInputEventName(this.$.vnode, model)
     enableWarn()
     const value = findValue(this.$.vnode)
