@@ -1,11 +1,22 @@
 {
   "name": "vee-validate-legacy",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "prepack": "unbuild",
     "lint": "eslint . --fix"
   },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.mjs"
+    }
+  },
+  "files": ["dist", "locale"],
   "dependencies": {
     "sync-hookable": "^1.0.1",
     "unbuild": "^1.1.2",

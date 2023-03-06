@@ -10,8 +10,8 @@ import {
 } from "../utils/vnode"
 import { Component, h } from "vue"
 import { createCommonHandlers, createValidationCtx, onRenderUpdate, ValidationContext } from "./common"
-import { getVueHooks } from "@/components/hooks"
-import { enableWarn, suppressWarn } from "@/utils/console"
+import { getVueHooks } from "./hooks"
+import { enableWarn, suppressWarn } from "../utils/console"
 
 type ValidationContextMapper = (ctx: ValidationContext) => Record<string, any>
 type ComponentLike = Component | { options: any }

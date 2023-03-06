@@ -10,7 +10,7 @@ import {
 import { find, includes, isCallable, isNullOrUndefined, isSpecified } from "./index"
 import { normalizeRules } from "./rules"
 import { RuleContainer } from "../extend"
-import { VModel } from "@/types"
+import { VModel } from "../types"
 
 export const isTextInput = (vnode: VNode): boolean => {
   const attrs = vnode.props

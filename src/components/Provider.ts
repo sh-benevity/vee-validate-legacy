@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { defineComponent, h, VNode } from "vue"
 import isEqual from "fast-deep-equal"
 
@@ -12,8 +11,8 @@ import { RuleContainer } from "../extend"
 import { ProviderInstance, ValidationFlags, ValidationResult, VeeObserver } from "../types"
 import { addListeners, computeModeSetting, createValidationCtx, triggerThreadSafeValidation } from "./common"
 import { EVENT_BUS } from "../localeChanged"
-import { generateVueHooks, getVueHooks } from "@/components/hooks"
-import { enableWarn, suppressWarn } from "@/utils/console"
+import { generateVueHooks, getVueHooks } from "./hooks"
+import { enableWarn, suppressWarn } from "../utils/console"
 
 let PROVIDER_COUNTER = 0
 
@@ -136,6 +135,8 @@ export const ValidationProvider = defineComponent({
 
       return (on || []).map((e) => {
         if (e === "input") {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           return this._inputEventName
         }
 
@@ -144,6 +145,8 @@ export const ValidationProvider = defineComponent({
     },
     isRequired(): boolean {
       suppressWarn()
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       const rules = { ...this._resolvedRules, ...this.normalizedRules }
       enableWarn()
 
@@ -165,6 +168,8 @@ export const ValidationProvider = defineComponent({
     rules: {
       deep: true,
       handler(val: any, oldVal: any) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         this._needsValidation = !isEqual(val, oldVal)
       },
     },
@@ -178,6 +183,8 @@ export const ValidationProvider = defineComponent({
         return
       }
 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       const regenerateMap = this._regenerateMap
       if (regenerateMap) {
         const errors: string[] = []
@@ -203,8 +210,8 @@ export const ValidationProvider = defineComponent({
   beforeUnmount() {
     const onLocaleChanged = localeChangedMap.get(this)
     EVENT_BUS.removeHook("change:locale", onLocaleChanged!)
-  },
-  beforeUnmount() {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     this.$_veeObserver.unobserve(this.id)
   },
   activated() {
@@ -232,9 +239,15 @@ export const ValidationProvider = defineComponent({
       this.setFlags(flags)
       this.failedRules = {}
       this.validateSilent()
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       this._pendingValidation = undefined
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       this._pendingReset = true
       setTimeout(() => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         this._pendingReset = false
       }, this.debounce)
     },
@@ -247,6 +260,8 @@ export const ValidationProvider = defineComponent({
     },
     async validateSilent(): Promise<ValidationResult> {
       this.setFlags({ pending: true })
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       const rules = { ...this._resolvedRules, ...this.normalizedRules }
       Object.defineProperty(rules, "_$$isNormalized", {
         value: true,
@@ -283,6 +298,8 @@ export const ValidationProvider = defineComponent({
     },
     applyResult({ errors, failedRules, regenerateMap }: Omit<ValidationResult, "valid">) {
       this.errors = errors
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       this._regenerateMap = regenerateMap
       this.failedRules = { ...(failedRules || {}) }
       this.setFlags({
@@ -298,6 +315,8 @@ export const ValidationProvider = defineComponent({
       updateRenderingContextRefs(this)
     },
     checkComputesRequiredState(): boolean {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       const rules = { ...this._resolvedRules, ...this.normalizedRules }
 
       const isRequired = Object.keys(rules).some(RuleContainer.isRequireRule)
@@ -316,13 +335,19 @@ export const ValidationProvider = defineComponent({
       if (inputs.length) {
         inputs.forEach((input, idx) => {
           // If the elements are not checkboxes and there are more input nodes
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           if (!includes(["checkbox", "radio"], input.props.type) && idx > 0) {
             return
           }
 
           const resolved = getConfig().useConstraintAttrs ? resolveRules(input) : {}
           suppressWarn()
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           if (!isEqual(this._resolvedRules, resolved)) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             this._needsValidation = true
           }
           enableWarn()
@@ -331,6 +356,8 @@ export const ValidationProvider = defineComponent({
             this.fieldName = input.props?.name || input.props?.id
           }
 
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           this._resolvedRules = resolved
 
           const vueHooks = getVueHooks(this)
@@ -372,6 +399,8 @@ function computeClassObj(names: ValidationClassMap, flags: ValidationFlags) {
 }
 
 function createLookup(vm: ProviderInstance) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const providers = vm.$_veeObserver.refs
   const reduced: { names: Record<string, string>; values: Record<string, any> } = {
     names: {},
@@ -417,16 +446,24 @@ function updateRenderingContextRefs(vm: ProviderInstance) {
 
   const { id } = vm
   // Nothing has changed.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (!vm.isActive || (id === providedId && vm.$_veeObserver.refs[id])) {
     return
   }
 
   // vid was changed.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (id !== providedId && vm.$_veeObserver.refs[id] === vm) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     vm.$_veeObserver.unobserve(id)
   }
 
   vm.id = providedId
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   vm.$_veeObserver.observe(vm)
 }
 
@@ -443,21 +480,34 @@ function createObserver(): VeeObserver {
 }
 
 function watchCrossFieldDep(ctx: ProviderInstance, depName: string, withHooks = true) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const providers = ctx.$_veeObserver.refs
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (!ctx._veeWatchers) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     ctx._veeWatchers = {}
   }
 
   if (!providers[depName] && withHooks) {
-    return ctx.$once("hook:mounted", () => {
+    const hooks = getVueHooks(ctx)
+    return hooks.hook("hook:mounted", () => {
       watchCrossFieldDep(ctx, depName, false)
     })
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   if (!isCallable(ctx._veeWatchers[depName]) && providers[depName]) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     ctx._veeWatchers[depName] = providers[depName].$watch("value", () => {
       const isComputesRequired = ctx.checkComputesRequiredState()
       if (ctx.flags.validated) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         ctx._needsValidation = true
         ctx.validate()
       }

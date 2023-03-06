@@ -3,8 +3,8 @@ import { debounce, isCallable, isRefEqual } from "../utils"
 import { InteractionModeFactory, modes } from "../modes"
 import { KnownKeys, ProviderInstance, ValidationFlags, ValidationResult } from "../types"
 import { addVNodeListener, findModel, findValue, getInputEventName } from "../utils/vnode"
-import { VueHookable } from "@/components/hooks"
-import { enableWarn, suppressWarn } from "@/utils/console"
+import { VueHookable } from "./hooks"
+import { enableWarn, suppressWarn } from "../utils/console"
 
 /**
  * Determines if a provider needs to run validation.
