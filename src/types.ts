@@ -106,3 +106,12 @@ export interface VModel {
   value: any
   "onUpdate:modelValue": Function
 }
+
+export function isVModel(obj: any) {
+  const keys = Object.keys(obj)
+
+  return (
+    keys.includes("value") &&
+    (keys.includes("onUpdate:modelValue") || keys.filter((key) => key.startsWith("onUpdate:")).length === 1)
+  )
+}

@@ -11,13 +11,18 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.mjs"
+      "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "locale"],
+  "files": [
+    "dist",
+    "locale"
+  ],
+  "type": "module",
   "dependencies": {
+    "fast-deep-equal": "^3.1.3",
     "sync-hookable": "^1.0.1",
     "unbuild": "^1.1.2",
     "vue": "^3.0.0"
