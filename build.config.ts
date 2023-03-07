@@ -9,7 +9,21 @@ export default defineBuildConfig({
       builder: "mkdist",
       input: "./src/rules",
       outDir: "./dist/rules",
+      declaration: false,
+      format: "cjs",
+      ext: "cjs",
+    },
+    {
+      builder: "mkdist",
+      input: "./src/rules",
+      outDir: "./dist/rules",
+      declaration: true,
+      format: "esm",
     },
   ],
   declaration: true,
+
+  rollup: {
+    emitCJS: true,
+  },
 })

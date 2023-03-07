@@ -6,6 +6,7 @@ import between from "./between"
 import confirmed from "./confirmed"
 import digits from "./digits"
 import dimensions from "./dimensions"
+import double from "./double"
 import email from "./email"
 import excluded from "./excluded"
 import ext from "./ext"
@@ -25,7 +26,6 @@ import regex from "./regex"
 import required from "./required"
 import required_if from "./required_if"
 import size from "./size"
-import double from "./double"
 
 export {
   alpha_dash,
@@ -36,6 +36,7 @@ export {
   confirmed,
   digits,
   dimensions,
+  double,
   email,
   ext,
   image,
@@ -55,5 +56,4 @@ export {
   required,
   required_if,
   size,
-  double,
 }
