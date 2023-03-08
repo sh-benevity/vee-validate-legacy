@@ -37,7 +37,7 @@ interface ValidationOptions {
  */
 export async function validate(
   value: any,
-  rules: string | Record<string, any>,
+  rules: string | Record<string, unknown>,
   options: ValidationOptions = {}
 ): Promise<ValidationResult> {
   const shouldBail = options?.bails

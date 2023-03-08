@@ -1414,4 +1414,40 @@ describe("Provider", function () {
       expect(wrapper.vm.$refs.provider.value).toBe("abc")
     })
   })
+
+  it("should work when wrapped", async function () {
+    const wrapper = mount(
+      {
+        props: {
+          refName: {
+            type: String,
+            default: "",
+          },
+        },
+        data: () => ({ value: "" }),
+        template: `
+          <ValidationProvider ref="validator" v-slot="{ validate, errors }" :name="refName" class="align-top block" mode="eager" :rules="'required'">
+              <input
+                v-model="value"
+                :type="'text'"
+                :name="null"
+              />
+              <div id="errors">
+                <div v-for="(error, key) in errors" v-show="errors" :key="key"
+                     class="text-red-500 mb-0 italic pt-1 text-sm">
+                  <p :id="\`error_\${key}\`">{{ error }}</p>
+              </div>
+            </div>
+          </ValidationProvider>
+      `,
+      },
+      { global: { components: { ValidationProvider } } }
+    )
+
+    wrapper.find("input").setValue("a")
+    await flushPromises()
+    wrapper.find("input").setValue("")
+    await flushPromises()
+    expect(wrapper.find("#errors").text()).toContain("is required")
+  })
 })

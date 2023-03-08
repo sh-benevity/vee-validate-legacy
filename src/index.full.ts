@@ -1,10 +1,69 @@
 import en from "../locale/en.json"
-import * as Rules from "./rules"
+import {
+  alpha_dash,
+  alpha_num,
+  alpha_spaces,
+  alpha,
+  between,
+  confirmed,
+  digits,
+  dimensions,
+  double,
+  email,
+  ext,
+  image,
+  oneOf,
+  integer,
+  length,
+  is_not,
+  is,
+  max,
+  max_value,
+  mimes,
+  min,
+  min_value,
+  excluded,
+  numeric,
+  regex,
+  required,
+  required_if,
+  size,
+} from "./rules"
 import { localize } from "./localize"
 import { extend } from "./extend"
 
 const version = "__VERSION__"
 
+const Rules = {
+  alpha_dash,
+  alpha_num,
+  alpha_spaces,
+  alpha,
+  between,
+  confirmed,
+  digits,
+  dimensions,
+  double,
+  email,
+  ext,
+  image,
+  oneOf,
+  integer,
+  length,
+  is_not,
+  is,
+  max,
+  max_value,
+  mimes,
+  min,
+  min_value,
+  excluded,
+  numeric,
+  regex,
+  required,
+  required_if,
+  size,
+}
 // Install all rules.
 const RulesAsList = Object.keys(Rules).map((key) => ({ schema: (Rules as any)[key], name: key }))
 RulesAsList.forEach(({ name, schema }) => {

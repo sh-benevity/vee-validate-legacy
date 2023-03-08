@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "unbuild",
-    "prepack": "yarn run build",
+    "prepack": "yarn build",
     "lint": "eslint . --fix"
   },
   "main": "./dist/index.cjs",
@@ -25,11 +25,6 @@
       "import": "./dist/types.mjs",
       "types": "./dist/types.d.ts",
       "require": "./dist/types.cjs"
-    },
-    "./rules/*": {
-      "import": "./dist/rules/*.mjs",
-      "types": "./dist/rules/*.d.ts",
-      "require": "./dist/rules/*.cjs"
     },
     "./locale/*.json": "./locale/*.json"
   },

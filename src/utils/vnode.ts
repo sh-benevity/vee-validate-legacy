@@ -35,16 +35,10 @@ export const isTextInput = (vnode: VNode): boolean => {
 
 // Gets the model object on the vnode.
 export function findModel(vnode: VNode): DirectiveBinding | VModel | undefined {
-  if (!vnode.dirs && !vnode.props) {
+  if (!vnode.props) {
     return undefined
   }
 
-  if (vnode.dirs && vnode.dirs.length > 0) {
-    return find(vnode.dirs, (d) => [vModelText, vModelCheckbox, vModelRadio, vModelSelect].includes(d.dir))
-  }
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const propKeys = Object.keys(vnode.props)
   if (!propKeys.includes("onUpdate:modelValue") && propKeys.filter((key) => key.startsWith("onUpdate:")).length != 1) {
     return undefined
@@ -53,14 +47,8 @@ export function findModel(vnode: VNode): DirectiveBinding | VModel | undefined {
   const modelKey = propKeys.includes("onUpdate:modelValue")
     ? "modelValue"
     : propKeys.filter((key) => key.startsWith("onUpdate:"))[0].replace(/^onUpdate:/g, "")
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   if (vnode.props[`onUpdate:${modelKey}`]) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const model = { value: vnode.props[modelKey] }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     model[`onUpdate:${modelKey}`] = vnode.props[`onUpdate:${modelKey}`]
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
