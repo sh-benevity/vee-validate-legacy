@@ -3,6 +3,7 @@ import { createFlags, debounce, findIndex, values } from "../utils"
 import { KnownKeys, ValidationFlags, ValidationResult } from "../types"
 import { ValidationProvider } from "./Provider"
 import { normalizeChildren } from "../utils/vnode"
+import { enableWarn, suppressWarn } from "../utils/console"
 
 const FLAGS_STRATEGIES: [keyof KnownKeys<ValidationFlags>, "every" | "some"][] = [
   ["pristine", "every"],
@@ -218,9 +219,12 @@ export const ValidationObserver = defineComponent({
   render(): VNode {
     const children = normalizeChildren(this, prepareSlotProps(this))
 
+    suppressWarn()
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    return this.slim && children.length <= 1 ? children[0] : h(this.tag, this.props, children)
+    const res = this.slim && children.length <= 1 ? children[0] : h(this.tag, this.props, children)
+    enableWarn()
+    return res
   },
 })
 

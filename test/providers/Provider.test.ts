@@ -105,7 +105,7 @@ describe("Provider", function () {
             name: "CustomInput",
             props: ["modelValue"],
             template: `
-              <p id="input">{{ value }}</p>
+              <p id="input">{{ modelValue }}</p>
             `,
           },
         },
@@ -1007,7 +1007,7 @@ describe("Provider", function () {
         template: `
         <ValidationObserver ref="obs">
           <ValidationProvider rules="required" v-slot="{ validate, errors }">
-            <ModelComp :value="myValue" @input="validate" />
+            <ModelComp :modelValue="myValue" @update:modelValue="validate" />
             <p id="error">{{ errors[0] }}</p>
           </ValidationProvider>
         </ValidationObserver>
