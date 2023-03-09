@@ -32,19 +32,6 @@ interface ValidationOptions {
   customMessages?: Record<string, string>
 }
 
-export type OptionsValue<T extends string, V extends string, TA extends [T] = [T], VA extends [V] = [V]> = {
-  [TK in TA extends Array<infer UT> ? UT : never]: string
-} & {
-  [TV in VA extends Array<infer UV> ? UV : never]: string
-} & { [k: string]: unknown }
-
-export type OptionsType<T extends string, V extends string> = {
-  text: T
-  value: V
-  items: Array<OptionsValue<T, V>>
-  plainTextFormat?: boolean
-}
-
 /**
  * Validates a value against the rules.
  */
