@@ -64,7 +64,9 @@ export function createValidationCtx(ctx: ProviderInstance): ValidationContext {
     classes: ctx.classes,
     failedRules: ctx.failedRules,
     reset: () => ctx.reset(),
-    validate: (...args: any[]) => ctx.validate(...args),
+    validate: (...args: any[]) => {
+      return ctx.validate(...args)
+    },
     ariaInput: {
       "aria-invalid": ctx.flags.invalid ? "true" : "false",
       "aria-required": ctx.isRequired ? "true" : "false",

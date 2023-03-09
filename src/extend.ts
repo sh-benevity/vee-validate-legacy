@@ -41,8 +41,8 @@ export class RuleContainer {
     return !!RULES[name]?.lazy
   }
 
-  public static isRequireRule(name: string) {
-    return !!RULES[name]?.computesRequired
+  public static isRequireRule(name: string): boolean {
+    return RULES[name]?.computesRequired || false
   }
 
   public static getRuleDefinition(ruleName: string) {
