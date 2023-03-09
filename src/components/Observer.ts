@@ -165,7 +165,7 @@ export const ValidationObserver = defineComponent({
       const results = await Promise.all([
         ...values(this.refs)
           .filter((r: any) => !r.disabled)
-          .map((ref: any) => ref[silent ? "validateSilent" : "validate"]().then((r: ValidationResult) => r.valid)),
+          .map((ref: any) => (silent ? ref.validateSilent() : ref.validate()).then((r: ValidationResult) => r.valid)),
         ...this.observers.filter((o: any) => !o.disabled).map((obs: any) => obs.validate({ silent })),
       ])
 

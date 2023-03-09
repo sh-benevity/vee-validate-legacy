@@ -49,8 +49,18 @@ export function findModel(vnode: VNode): DirectiveBinding | VModel | undefined {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const propKeys = Object.keys(vnode.props)
-  if (!propKeys.includes("onUpdate:modelValue") && propKeys.filter((key) => key.startsWith("onUpdate:")).length != 1) {
+  if (
+    !(vnode.type === "input" && vnode.props?.onInput) &&
+    !propKeys.includes("onUpdate:modelValue") &&
+    propKeys.filter((key) => key.startsWith("onUpdate:")).length != 1
+  ) {
     return undefined
+  }
+
+  if (vnode.type === "input" && vnode.props?.onInput) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return { value: vnode.props.value, onInput: vnode.props.onInput }
   }
 
   const modelKey = propKeys.includes("onUpdate:modelValue")
@@ -230,7 +240,9 @@ export function getInputEventName(vnode: VNode, model?: DirectiveBinding): strin
 
   // is a textual-type input.
   if (isTextInput(vnode)) {
-    return "onUpdate:modelValue"
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return model?.onInput ? "onInput" : "onUpdate:modelValue"
   }
 
   return "onChange"
