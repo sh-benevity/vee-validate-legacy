@@ -1,7 +1,21 @@
 {
   "name": "vee-validate-legacy",
+  "description": "Template Based Validation Framework for Vue.js",
   "version": "1.0.0",
+  "author": "Vinccool96 <Vinccool96@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Vinccool96/vee-validate-legacy.git"
+  },
+  "keywords": [
+    "VueJS",
+    "Vue",
+    "validation",
+    "validator",
+    "inputs",
+    "form"
+  ],
   "scripts": {
     "build": "unbuild",
     "prepack": "yarn build",
