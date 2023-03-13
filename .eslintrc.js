@@ -22,5 +22,6 @@ module.exports = {
     curly: "error",
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "one-var": ["error", "never"],
+    "vue/html-self-closing": "off",
   },
 }
