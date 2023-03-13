@@ -1,3 +1,5 @@
+import { Component, h } from "vue"
+
 import { ValidationProvider } from "./Provider"
 import { identity } from "../utils"
 import {
@@ -8,7 +10,6 @@ import {
   mergeVNodeListeners,
   normalizeSlots,
 } from "../utils/vnode"
-import { Component, h } from "vue"
 import { createCommonHandlers, createValidationCtx, onRenderUpdate, ValidationContext } from "./common"
 import { getVueHooks } from "./hooks"
 import { enableWarn, suppressWarn } from "../utils/console"
@@ -29,7 +30,7 @@ export function withValidation(component: ComponentLike, mapProps: ValidationCon
     inject: providerOpts.inject,
   }
 
-  const eventName = options?.model?.event || "input"
+  const eventName = options?.model?.event || "onUpdate:modelValue"
 
   hoc.render = function () {
     this.registerField()
@@ -46,25 +47,24 @@ export function withValidation(component: ComponentLike, mapProps: ValidationCon
 
     const { onInput, onBlur, onValidate } = createCommonHandlers(this)
 
+    suppressWarn()
     mergeVNodeListeners(this, eventName, onInput)
     mergeVNodeListeners(this, "onBlur", onBlur)
     this.normalizedEvents.forEach((evt: string) => {
       mergeVNodeListeners(this, evt, onValidate)
     })
+    enableWarn()
 
     // Props are any attrs not associated with ValidationProvider Plus the model prop.
     // WARNING: Accidental prop overwrite will probably happen.
-    const { prop } = findModelConfig(this.$.vnode) || { prop: "value" }
-    const props = { ...this.$attrs, ...{ [prop]: model?.value }, ...mapProps(vctx) }
+    const { prop } = findModelConfig(this.$.vnode) || { prop: "modelValue" }
+    const props = { ...{ [prop]: model?.value }, ...mapProps(vctx) }
 
-    return h(
-      options,
-      {
-        attrs: this.$attrs,
-        props,
-      },
-      normalizeSlots(this.$slots, this.$.vnode.ctx.ctx)
-    )
+    suppressWarn()
+    const rendered = h(options, props, normalizeSlots(this.$slots, this.$.vnode.ctx.ctx))
+    enableWarn()
+
+    return rendered
   }
 
   return hoc
