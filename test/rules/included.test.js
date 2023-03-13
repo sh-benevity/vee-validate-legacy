@@ -1,6 +1,6 @@
 import { expect, test } from "vitest"
 
-import { validate } from "@/rules/oneOf"
+import { validate } from "../../src/rules/oneOf"
 
 test("validates that the value exists within a list", () => {
   const list = [1, 2, 3, 4, 5]

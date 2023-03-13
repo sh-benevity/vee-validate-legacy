@@ -5,13 +5,15 @@ import { describe, expect, it } from "vitest"
 import { nextTick } from "vue"
 import { mount } from "@vue/test-utils"
 import flushPromises from "flush-promises"
-import { configure, extend, ValidationObserver, ValidationProvider, withValidation } from "@/index.full"
-import InputWithoutValidation from "./components/InputWithoutValidation.vue"
-import InputWithSlot from "./components/InputWithSlot.vue"
-import ModelComp from "./../helpers/ModelComp"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { template } from "@babel/core"
-import { ObserverInstance } from "@/types"
+
+import { configure, extend, ValidationObserver, ValidationProvider, withValidation } from "../../src/index.full"
+import { ObserverInstance } from "../../src/types"
+
+import ModelComp from "../helpers/ModelComp"
+import InputWithoutValidation from "./components/InputWithoutValidation.vue"
+import InputWithSlot from "./components/InputWithSlot.vue"
 
 const DEFAULT_REQUIRED_MESSAGE = "The {field} field is required"
 

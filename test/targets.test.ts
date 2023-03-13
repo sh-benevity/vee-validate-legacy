@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { validate } from "@/validate"
-import { extend } from "@/extend"
-import { between, confirmed, excluded } from "@/rules"
+import { validate } from "../src/validate"
+import { extend } from "../src/extend"
+import { between, confirmed, excluded } from "../src/rules"
 
 describe("targets", function () {
   describe("target field placeholder", function () {

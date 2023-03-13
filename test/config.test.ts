@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import { mount } from "@vue/test-utils"
 import flushPromises from "flush-promises"
 
-import { configure, ValidationProvider } from "@/index.full"
+import { configure, ValidationProvider } from "../src/index.full"
 
 describe("config", function () {
   it("should set config using configure fn", async function () {

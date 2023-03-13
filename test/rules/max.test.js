@@ -1,6 +1,6 @@
 import { expect, test } from "vitest"
 
-import { validate } from "@/rules/max"
+import { validate } from "../../src/rules/max"
 
 const valid = [123, "abc", 1, 12, undefined, null, ""]
 

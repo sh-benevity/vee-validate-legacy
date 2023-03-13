@@ -1,6 +1,6 @@
 import { expect, test } from "vitest"
 
-import { validate } from "@/rules/confirmed"
+import { validate } from "../../src/rules/confirmed"
 
 test("validates a field confirmation", () => {
   expect(validate("p@$$word", { target: "p@$$word" })).toBe(true)

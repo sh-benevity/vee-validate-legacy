@@ -1,6 +1,6 @@
 import { expect, test } from "vitest"
 
-import { validate } from "@/rules/email"
+import { validate } from "../../src/rules/email"
 
 const valid = [
   "someone@example.com",

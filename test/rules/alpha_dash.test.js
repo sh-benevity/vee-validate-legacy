@@ -1,6 +1,6 @@
 import { expect, test } from "vitest"
 
-import { validate } from "@/rules/alpha_dash"
+import { validate } from "../../src/rules/alpha_dash"
 
 const valid = [
   "a",

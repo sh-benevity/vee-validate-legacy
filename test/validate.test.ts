@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { validate } from "@/validate"
-import { extend } from "@/extend"
-import { numeric } from "@/rules"
+import { validate } from "../src/validate"
+import { extend } from "../src/extend"
+import { numeric } from "../src/rules"
 
 describe("validate", function () {
   it("should return custom error messages passed in ValidationOptions", async () => {

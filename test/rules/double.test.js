@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest"
-import { validate } from "@/rules/double"
+import { validate } from "../../src/rules/double"
 
 const valid = [2.2, 1.1222, -2.32, "2.3333", 1, "1", "-2.4444"]
 const invalid = ["", undefined, null, true, false, {}, "+32.32", "a", "323ads232", "2..2"]

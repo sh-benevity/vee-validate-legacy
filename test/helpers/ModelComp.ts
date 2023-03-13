@@ -1,4 +1,4 @@
 export default {
-  props: ["value"],
-  template: `<input type="text" :value="value" @input="emit('input', $event)">`,
+  props: ["modelValue"],
+  template: `<input type="text" :value="modelValue" @update:modelValue="$emit('input', $event)">`,
 }

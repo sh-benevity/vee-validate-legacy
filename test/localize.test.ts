@@ -2,26 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { mount } from "@vue/test-utils"
 import flushPromises from "flush-promises"
-import { extend, localize, ValidationProvider } from "@/index.full"
-import { createI18n } from "vue-i18n"
-
-const i18n = createI18n({
-  locale: "en",
-  messages: {
-    en: {
-      foo: "foo",
-      bar: "bar",
-      toto: "toto",
-      tata: "tata",
-    },
-    fr: {
-      foo: "Foo",
-      bar: "Bar",
-      toto: "Toto",
-      tata: "Tata",
-    },
-  },
-})
+import { extend, localize, ValidationProvider } from "../src/index.full"
 
 describe("localize", function () {
   it("should define new locales", async function () {
@@ -46,7 +27,7 @@ describe("localize", function () {
       `,
         props: {},
       },
-      { global: { components: { ValidationProvider }, plugins: [i18n] } }
+      { global: { components: { ValidationProvider } } }
     )
 
     const error = wrapper.find("#error")

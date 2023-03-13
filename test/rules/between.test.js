@@ -1,6 +1,6 @@
 import { expect, test } from "vitest"
 
-import { validate } from "@/rules/between"
+import { validate } from "../../src/rules/between"
 
 const valid = ["1", 2, 3, [1, 2, 3]]
 

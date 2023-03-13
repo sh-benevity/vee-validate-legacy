@@ -1,6 +1,6 @@
 import { expect, test } from "vitest"
 
-import { validate } from "@/rules/integer"
+import { validate } from "../../src/rules/integer"
 
 const valid = ["1234567890", 123, -123, "-1234"]
 

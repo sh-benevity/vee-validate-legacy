@@ -1,6 +1,6 @@
 import { beforeEach, expect, test } from "vitest"
 
-import { validate } from "@/rules/dimensions"
+import { validate } from "../../src/rules/dimensions"
 import helpers from "./../helpers"
 
 let fails = false

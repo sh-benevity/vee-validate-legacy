@@ -1,6 +1,6 @@
 import { expect, test } from "vitest"
 
-import { validate } from "@/rules/required_if"
+import { validate } from "../../src/rules/required_if"
 
 test("validates a conditional requirement", () => {
   // foo is not part of [bar, baz] -> field is not required & valid

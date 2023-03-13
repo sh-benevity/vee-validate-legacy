@@ -3,9 +3,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { mount } from "@vue/test-utils"
-import { ValidationProvider, ValidationObserver } from "@/index.full"
 import flushPromises from "flush-promises"
-import { ObserverInstance } from "@/types"
+
+import { ValidationProvider, ValidationObserver } from "../../src/index.full"
+import { ObserverInstance } from "../../src/types"
 
 async function flush() {
   await flushPromises()

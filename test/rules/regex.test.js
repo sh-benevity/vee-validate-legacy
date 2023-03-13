@@ -1,6 +1,6 @@
 import { expect, test } from "vitest"
 
-import { validate } from "@/rules/regex"
+import { validate } from "../../src/rules/regex"
 
 test("validates regular expressions", () => {
   const regex = /^[0-9]+$/

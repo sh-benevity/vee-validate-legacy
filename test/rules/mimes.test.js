@@ -1,6 +1,6 @@
 import { expect, test } from "vitest"
 
-import { validate } from "@/rules/mimes"
+import { validate } from "../../src/rules/mimes"
 import helpers from "./../helpers"
 
 test("validates mime types", () => {

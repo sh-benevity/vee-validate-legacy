@@ -1,6 +1,6 @@
 import { expect, test } from "vitest"
 
-import { validate } from "@/rules/is_not"
+import { validate } from "../../src/rules/is_not"
 
 test("checks if the value does not match another", () => {
   expect(validate(1, { other: "1" })).toBe(true)

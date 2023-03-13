@@ -1,6 +1,6 @@
 import { expect, test } from "vitest"
 
-import { validate } from "@/rules/ext"
+import { validate } from "../../src/rules/ext"
 import helpers from "./../helpers"
 
 test("validates files extensions", () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { extend, validate } from "@/index.full"
+import { extend, validate } from "../src/index.full"
 
 describe("extend", function () {
   it("should throw error if passed a non-function as the validate method", function () {
