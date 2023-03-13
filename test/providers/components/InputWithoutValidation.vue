@@ -2,7 +2,6 @@
   <input
     id="input"
     type="text"
-    :class="classes"
     name="first"
     placeholder="First"
     autofocus
