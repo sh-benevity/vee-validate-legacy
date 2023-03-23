@@ -1292,7 +1292,7 @@ describe("Provider", function () {
     extend("isOneOf", {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      validate(value, { val, isOneOf }) {
+      validate(value: string, { val, isOneOf }: { val: string; isOneOf: string[] }) {
         return isOneOf.includes(value) && isOneOf.includes(val)
       },
       params: ["val", "isOneOf"],
