@@ -20,8 +20,9 @@ module.exports = {
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     "no-var": "error",
     curly: "error",
-    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
     "one-var": ["error", "never"],
     "vue/html-self-closing": "off",
+    "@typescript-eslint/ban-types": ["error", { types: { Function: false } }],
   },
 }

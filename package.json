@@ -19,7 +19,8 @@
   "scripts": {
     "build": "unbuild",
     "prepack": "yarn build",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "checkTypes": "tsc src/*.ts test/*.ts --noEmit --esModuleInterop --resolveJsonModule"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
