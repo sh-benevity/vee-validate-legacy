@@ -1,4 +1,4 @@
-import { RuleParamSchema, StringOrNumber } from "../types"
+import { defineRuleParamConfig, StringOrNumber } from "../types"
 
 const validate = (value: StringOrNumber | StringOrNumber[], { min, max }: Record<string, any> = {}): boolean => {
   if (Array.isArray(value)) {
@@ -8,14 +8,14 @@ const validate = (value: StringOrNumber | StringOrNumber[], { min, max }: Record
   return Number(min) <= value && Number(max) >= value
 }
 
-const params: RuleParamSchema[] = [
-  {
+const params = [
+  defineRuleParamConfig({
     name: "min",
-  },
-  {
+  }),
+  defineRuleParamConfig({
     name: "max",
-  },
-]
+  }),
+] as const
 
 export { validate, params }
 

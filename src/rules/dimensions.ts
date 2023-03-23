@@ -1,4 +1,4 @@
-import { RuleParamSchema } from "../types"
+import { defineRuleParamConfig } from "../types"
 
 const validateImage = (file: File, width: number, height: number): Promise<boolean> => {
   const URL = window.URL || (window as any).webkitURL
@@ -29,20 +29,20 @@ const validate = (files: File | File[], { width, height }: Record<string, any>) 
   })
 }
 
-const params: RuleParamSchema[] = [
-  {
+const params = [
+  defineRuleParamConfig({
     name: "width",
     cast(value) {
       return Number(value)
     },
-  },
-  {
+  }),
+  defineRuleParamConfig({
     name: "height",
     cast(value) {
       return Number(value)
     },
-  },
-]
+  }),
+] as const
 
 export { validate, params }
 

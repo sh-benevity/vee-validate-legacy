@@ -1,4 +1,4 @@
-import { RuleParamSchema, StringOrNumber } from "../types"
+import { defineRuleParamConfig, StringOrNumber } from "../types"
 
 const validate = (value: StringOrNumber | StringOrNumber[], { regex }: Record<string, any>): boolean => {
   if (Array.isArray(value)) {
@@ -8,8 +8,8 @@ const validate = (value: StringOrNumber | StringOrNumber[], { regex }: Record<st
   return regex.test(String(value))
 }
 
-const params: RuleParamSchema[] = [
-  {
+const params = [
+  defineRuleParamConfig({
     name: "regex",
     cast(value) {
       if (typeof value === "string") {
@@ -18,7 +18,7 @@ const params: RuleParamSchema[] = [
 
       return value
     },
-  },
+  }),
 ]
 
 export { validate, params }

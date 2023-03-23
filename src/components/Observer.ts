@@ -1,4 +1,4 @@
-import { defineComponent, VNode, h } from "vue"
+import { defineComponent, h, VNode } from "vue"
 import { createFlags, debounce, findIndex, values } from "../utils"
 import { KnownKeys, ValidationFlags, ValidationResult } from "../types"
 import { ValidationProvider } from "./Provider"

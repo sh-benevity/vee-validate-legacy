@@ -338,8 +338,8 @@ export function resolveRules(vnode: VNode) {
 
 export function normalizeChildren(context: ComponentPublicInstance, slotProps: any): VNode[] {
   if (context.$slots.default) {
-    return context.$slots.default(slotProps) || []
+    return context.$slots.default(slotProps) || ([] as VNode[])
   }
 
-  return context.$slots.default || []
+  return (context.$slots.default as unknown as VNode[]) || ([] as VNode[])
 }

@@ -1,7 +1,7 @@
 import { validate as includes } from "./oneOf"
 import { ValidationRuleFunction } from "../types"
 
-const validate: ValidationRuleFunction = (value, args) => {
+const validate: ValidationRuleFunction<any[], []> = (value, args) => {
   return !includes(value, args)
 }
 

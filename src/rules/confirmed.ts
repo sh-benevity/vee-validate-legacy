@@ -1,13 +1,13 @@
-import { RuleParamSchema } from "../types"
+import { defineRuleParamConfig } from "../types"
 
 const validate = (value: string, { target }: Record<string, any>) => String(value) === String(target)
 
-const params: RuleParamSchema[] = [
-  {
+const params = [
+  defineRuleParamConfig({
     name: "target",
     isTarget: true,
-  },
-]
+  }),
+] as const
 
 export { validate, params }
 

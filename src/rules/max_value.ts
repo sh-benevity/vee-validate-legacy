@@ -1,7 +1,10 @@
 import { isNullOrUndefined } from "../utils"
-import { RuleParamSchema, StringOrNumber, ValidationRuleFunction } from "../types"
+import { defineRuleParamConfig, StringOrNumber, ValidationRuleFunction } from "../types"
 
-const validate: ValidationRuleFunction = (value: StringOrNumber | StringOrNumber[], { max }: Record<string, any>) => {
+const validate: ValidationRuleFunction<StringOrNumber | StringOrNumber[], typeof params> = (
+  value: StringOrNumber | StringOrNumber[],
+  { max }: Record<string, any>
+) => {
   if (isNullOrUndefined(value) || value === "") {
     return false
   }
@@ -13,14 +16,14 @@ const validate: ValidationRuleFunction = (value: StringOrNumber | StringOrNumber
   return Number(value) <= max
 }
 
-const params: RuleParamSchema[] = [
-  {
+const params = [
+  defineRuleParamConfig({
     name: "max",
     cast(value) {
       return Number(value)
     },
-  },
-]
+  }),
+] as const
 
 export { validate, params }
 

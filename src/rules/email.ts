@@ -1,4 +1,4 @@
-import { RuleParamSchema } from "../types"
+import { defineRuleParamConfig } from "../types"
 
 const validate = (value: string | string[], { multiple }: Record<string, any> = {}) => {
   // eslint-disable-next-line
@@ -16,11 +16,11 @@ const validate = (value: string | string[], { multiple }: Record<string, any> = 
   return re.test(String(value))
 }
 
-const params: RuleParamSchema[] = [
-  {
+const params = [
+  defineRuleParamConfig({
     name: "multiple",
     default: false,
-  },
+  }),
 ]
 
 export { validate, params }

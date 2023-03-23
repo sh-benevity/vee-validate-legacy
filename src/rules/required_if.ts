@@ -1,5 +1,5 @@
 import { includes, isEmptyArray } from "../utils"
-import { RuleParamSchema } from "../types"
+import { defineRuleParamConfig } from "../types"
 
 const testEmpty = (value: any) =>
   isEmptyArray(value) || includes([false, null, undefined], value) || !String(value).trim().length
@@ -31,15 +31,15 @@ const validate = (value: any, { target, values }: Record<string, any>) => {
   }
 }
 
-const params: RuleParamSchema[] = [
-  {
+const params = [
+  defineRuleParamConfig({
     name: "target",
     isTarget: true,
-  },
-  {
+  }),
+  defineRuleParamConfig({
     name: "values",
-  },
-]
+  }),
+] as const
 
 export const computesRequired = true
 

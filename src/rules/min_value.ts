@@ -1,5 +1,5 @@
 import { isNullOrUndefined } from "../utils"
-import { RuleParamSchema, StringOrNumber } from "../types"
+import { defineRuleParamConfig, StringOrNumber } from "../types"
 
 const validate = (value: StringOrNumber | StringOrNumber[], { min }: Record<string, any>): boolean => {
   if (isNullOrUndefined(value) || value === "") {
@@ -13,14 +13,14 @@ const validate = (value: StringOrNumber | StringOrNumber[], { min }: Record<stri
   return Number(value) >= min
 }
 
-const params: RuleParamSchema[] = [
-  {
+const params = [
+  defineRuleParamConfig({
     name: "min",
     cast(value) {
       return Number(value)
     },
-  },
-]
+  }),
+] as const
 
 export { validate, params }
 

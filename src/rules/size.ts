@@ -1,4 +1,4 @@
-import { RuleParamSchema } from "../types"
+import { defineRuleParamConfig } from "../types"
 
 const validate = (files: File | File[], { size }: Record<string, any>) => {
   if (isNaN(size)) {
@@ -19,14 +19,14 @@ const validate = (files: File | File[], { size }: Record<string, any>) => {
   return true
 }
 
-const params: RuleParamSchema[] = [
-  {
+const params = [
+  defineRuleParamConfig({
     name: "size",
     cast(value) {
       return Number(value)
     },
-  },
-]
+  }),
+] as const
 
 export { validate, params }
 

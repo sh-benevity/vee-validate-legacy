@@ -1,5 +1,5 @@
 import { alphanumeric } from "./alpha_helper"
-import { RuleParamSchema } from "../types"
+import { defineRuleParamConfig } from "../types"
 
 const validate = (value: string | string[], { locale = "" }: Record<string, any> = {}): boolean => {
   if (Array.isArray(value)) {
@@ -14,11 +14,11 @@ const validate = (value: string | string[], { locale = "" }: Record<string, any>
   return (alphanumeric[locale] || alphanumeric.en).test(value)
 }
 
-const params: RuleParamSchema[] = [
-  {
+const params = [
+  defineRuleParamConfig({
     name: "locale",
-  },
-]
+  }),
+] as const
 
 export { validate, params }
 

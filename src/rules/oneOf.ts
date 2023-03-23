@@ -1,7 +1,7 @@
 import { toArray } from "../utils"
 import { ValidationRuleFunction } from "../types"
 
-const validate: ValidationRuleFunction = (value, options) => {
+const validate: ValidationRuleFunction<any[], []> = (value, options) => {
   if (Array.isArray(value)) {
     return value.every((val) => validate(val, options))
   }

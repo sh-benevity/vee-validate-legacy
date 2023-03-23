@@ -1,5 +1,5 @@
 import { isNullOrUndefined } from "../utils"
-import { RuleParamSchema, StringOrNumber } from "../types"
+import { defineRuleParamConfig, StringOrNumber } from "../types"
 
 const validate = (value: StringOrNumber | StringOrNumber[], { length }: Record<string, any>): boolean => {
   if (isNullOrUndefined(value)) {
@@ -13,14 +13,14 @@ const validate = (value: StringOrNumber | StringOrNumber[], { length }: Record<s
   return String(value).length <= length
 }
 
-const params: RuleParamSchema[] = [
-  {
+const params = [
+  defineRuleParamConfig({
     name: "length",
     cast(value) {
       return Number(value)
     },
-  },
-]
+  }),
+] as const
 
 export { validate, params }
 

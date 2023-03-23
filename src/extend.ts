@@ -1,28 +1,39 @@
-import { RuleParamConfig, ValidationRule, ValidationRuleSchema } from "./types"
+import { RuleParams, RuleParamSchema, ValidationRule, ValidationRuleSchema } from "./types"
 import { isCallable, merge } from "./utils"
 
-interface NormalizedRuleSchema extends ValidationRuleSchema {
-  params?: RuleParamConfig[]
+interface NormalizedRuleSchema<V, AP extends ReadonlyArray<RuleParamSchema<string, unknown>>>
+  extends ValidationRuleSchema<V, AP> {
+  params?: RuleParams<AP>
 }
 
-const RULES: { [k: string]: NormalizedRuleSchema } = {}
+const RULES: { [k: string]: NormalizedRuleSchema<unknown, ReadonlyArray<RuleParamSchema<string, unknown>>> } = {}
 
-function normalizeSchema(schema: ValidationRuleSchema): NormalizedRuleSchema {
+function normalizeSchema<V, AP extends ReadonlyArray<RuleParamSchema<string, unknown>>>(
+  schema: ValidationRuleSchema<V, AP>
+): NormalizedRuleSchema<V, AP> {
   if (schema.params?.length) {
-    schema.params = schema.params.map((param) => {
+    const params = schema.params.map((param) => {
       if (typeof param === "string") {
         return { name: param }
       }
 
       return param
     })
+
+    return <NormalizedRuleSchema<V, AP>>(<unknown>{
+      ...schema,
+      params: params,
+    })
   }
 
-  return schema as NormalizedRuleSchema
+  return schema as NormalizedRuleSchema<V, AP>
 }
 
 export class RuleContainer {
-  public static extend(name: string, schema: ValidationRuleSchema) {
+  public static extend<
+    V,
+    AP extends ReadonlyArray<RuleParamSchema<string, unknown>> = ReadonlyArray<RuleParamSchema<string, unknown>>
+  >(name: string, schema: ValidationRuleSchema<V, AP>) {
     // if rule already exists, overwrite it.
     const rule = normalizeSchema(schema)
     if (RULES[name]) {
@@ -30,11 +41,13 @@ export class RuleContainer {
       return
     }
 
-    RULES[name] = {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    RULES[name] = <NormalizedRuleSchema<V, AP>>(<unknown>{
       lazy: false,
       computesRequired: false,
       ...rule,
-    }
+    })
   }
 
   public static isLazy(name: string) {
@@ -53,7 +66,10 @@ export class RuleContainer {
 /**
  * Adds a custom validator to the list of validation rules.
  */
-export function extend(name: string, schema: ValidationRule) {
+export function extend<V, AP extends ReadonlyArray<RuleParamSchema<string, unknown>>>(
+  name: string,
+  schema: ValidationRule<V, AP>
+) {
   // makes sure new rules are properly formatted.
   guardExtend(name, schema)
 
@@ -71,7 +87,10 @@ export function extend(name: string, schema: ValidationRule) {
 /**
  * Guards from extension violations.
  */
-function guardExtend(name: string, validator: ValidationRule) {
+function guardExtend<V, AP extends ReadonlyArray<RuleParamSchema<string, unknown>>>(
+  name: string,
+  validator: ValidationRule<V, AP>
+) {
   if (isCallable(validator)) {
     return
   }

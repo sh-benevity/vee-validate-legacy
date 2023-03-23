@@ -221,10 +221,10 @@ async function _test(field: FieldContext, value: any, rule: { name: string; para
 /**
  * Generates error messages.
  */
-function _generateFieldError(
+function _generateFieldError<V, AP extends ReadonlyArray<RuleParamSchema<string, unknown>>>(
   field: FieldContext,
   value: any,
-  ruleSchema: ValidationRuleSchema,
+  ruleSchema: ValidationRuleSchema<V, AP>,
   ruleName: string,
   params: Record<string, any>
 ) {
@@ -246,9 +246,9 @@ function _generateFieldError(
   }
 }
 
-function _getRuleTargets(
+function _getRuleTargets<V, AP extends ReadonlyArray<RuleParamSchema<string, unknown>>>(
   field: FieldContext,
-  ruleSchema: ValidationRuleSchema,
+  ruleSchema: ValidationRuleSchema<V, AP>,
   ruleName: string
 ): Record<string, string> {
   const params = ruleSchema.params
@@ -256,7 +256,7 @@ function _getRuleTargets(
     return {}
   }
 
-  const numTargets = params.filter((param) => (param as RuleParamConfig).isTarget).length
+  const numTargets = params.filter((param) => (param as RuleParamConfig<string, unknown>).isTarget).length
   if (numTargets <= 0) {
     return {}
   }
@@ -270,7 +270,7 @@ function _getRuleTargets(
   }
 
   for (let index = 0; index < params.length; index++) {
-    const param: RuleParamConfig = params[index] as RuleParamConfig
+    const param = params[index] as RuleParamConfig<string, unknown>
     let key = ruleConfig[index]
     if (!isLocator(key)) {
       continue
@@ -285,15 +285,15 @@ function _getRuleTargets(
   return names
 }
 
-function _getUserTargets(
+function _getUserTargets<V, AP extends ReadonlyArray<RuleParamSchema<string, unknown>>>(
   field: FieldContext,
-  ruleSchema: ValidationRuleSchema,
+  ruleSchema: ValidationRuleSchema<V, AP>,
   ruleName: string,
   userMessage: string | ValidationMessageGenerator | undefined
 ) {
   const userTargets: any = {}
   const rules: Record<string, any> = field.rules[ruleName]
-  const params: RuleParamSchema[] = ruleSchema.params || []
+  const params: AP | [] = ruleSchema.params || []
 
   // early return if no rules
   if (!rules) {

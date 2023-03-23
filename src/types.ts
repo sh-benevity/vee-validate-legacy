@@ -38,30 +38,62 @@ export interface ValidationRuleResult {
   required?: boolean
 }
 
-export type ValidationRuleFunction = (
-  value: any,
-  params: any[] | Record<string, any>
+export type ValidationRuleFunction<V, AP extends ReadonlyArray<RuleParamSchema<string, unknown>>> = (
+  value: V,
+  params: ValidationParams<AP>
 ) => boolean | string | ValidationRuleResult | Promise<boolean | string | ValidationRuleResult>
 
-export interface RuleParamConfig {
-  name: string
+export interface RuleParamConfig<N extends string, T> {
+  name: N
   isTarget?: boolean
-  default?: any
-  cast?(value: any): any
+  default?: T
+  cast?(value: any): T
 }
 
-export type RuleParamSchema = string | RuleParamConfig
+export type RuleParamSchema<N extends string, T> = (string & T) | RuleParamConfig<N, T>
 
-export interface ValidationRuleSchema {
-  validate?: ValidationRuleFunction
-  params?: RuleParamSchema[]
+export type RuleParamConfigOfSchema<S extends RuleParamSchema<string, unknown>> = S extends string
+  ? RuleParamConfig<S, S>
+  : S extends RuleParamConfig<infer N, infer T>
+  ? RuleParamConfig<N, T>
+  : never
+
+export type RuleParams<AP extends ReadonlyArray<RuleParamSchema<string, unknown>>> = AP & {
+  [I: number]: RuleParamConfigOfSchema<AP[typeof I]>
+}
+
+export interface ValidationRuleSchema<V, AP extends ReadonlyArray<RuleParamSchema<string, unknown>>> {
+  validate?: ValidationRuleFunction<V, AP>
+  params?: AP
   message?: ValidationMessageTemplate
   lazy?: boolean
   computesRequired?: boolean
   castValue?(value: any): any
 }
 
-export type ValidationRule = ValidationRuleFunction | ValidationRuleSchema
+export type ValidationParams<AP extends ReadonlyArray<RuleParamSchema<string, unknown>>> = {
+  [K in AP extends ReadonlyArray<infer RP>
+    ? RP extends RuleParamSchema<infer TK, infer _>
+      ? TK
+      : never
+    : never]: AP extends ReadonlyArray<infer RP> ? (RP extends RuleParamSchema<K, infer TV> ? TV : never) : never
+}
+
+export function defineValidation<V, AP extends ReadonlyArray<RuleParamSchema<string, unknown>>>(
+  validation: ValidationRuleSchema<V, AP>
+): ValidationRuleSchema<V, AP> {
+  return validation
+}
+
+export function defineRuleParamConfig<N extends string, T>(
+  ruleParamConfig: RuleParamConfig<N, T>
+): RuleParamConfig<N, T> {
+  return ruleParamConfig
+}
+
+export type ValidationRule<V, AP extends ReadonlyArray<RuleParamSchema<string, unknown>>> =
+  | ValidationRuleFunction<V, AP>
+  | ValidationRuleSchema<V, AP>
 
 export type StringOrNumber = string | number
 

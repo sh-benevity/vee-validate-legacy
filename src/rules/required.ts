@@ -1,5 +1,5 @@
 import { isEmptyArray, isNullOrUndefined } from "../utils"
-import { RuleParamSchema } from "../types"
+import { defineRuleParamConfig } from "../types"
 
 const validate = (value: any, { allowFalse }: Record<string, any> = { allowFalse: true }) => {
   const result = {
@@ -23,12 +23,12 @@ const validate = (value: any, { allowFalse }: Record<string, any> = { allowFalse
 
 export const computesRequired = true
 
-const params: RuleParamSchema[] = [
-  {
+const params = [
+  defineRuleParamConfig({
     name: "allowFalse",
     default: true,
-  },
-]
+  }),
+] as const
 
 export { validate, params }
 

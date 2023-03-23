@@ -1,4 +1,4 @@
-import { Locator, RuleParamConfig } from "../types"
+import { Locator, RuleParams, RuleParamSchema } from "../types"
 import { RuleContainer } from "../extend"
 import { includes, isLocator, isObject, warn } from "./index"
 
@@ -63,7 +63,7 @@ export function normalizeRules(rules: any) {
   }, acc)
 }
 
-function buildParams(ruleName: string, provided: any[] | Record<string, any>) {
+function buildParams<AP extends ReadonlyArray<RuleParamSchema<string, unknown>>>(ruleName: string, provided: AP) {
   const ruleSchema = RuleContainer.getRuleDefinition(ruleName)
   if (!ruleSchema) {
     return provided
@@ -79,22 +79,22 @@ function buildParams(ruleName: string, provided: any[] | Record<string, any>) {
     return provided
   }
 
-  let definedParams: RuleParamConfig[]
+  let definedParams: RuleParams<AP>
   // collect the params schema.
   if (!ruleSchema.params || (ruleSchema.params.length < provided.length && Array.isArray(provided))) {
-    let lastDefinedParam: RuleParamConfig
+    let lastDefinedParam: AP extends ReadonlyArray<infer R> ? R : never
     // collect any additional parameters in the last item.
     definedParams = provided.map((_: any, idx: number) => {
-      let param = ruleSchema.params?.[idx]
-      lastDefinedParam = param || lastDefinedParam
+      let param = ruleSchema.params?.[idx] as AP extends ReadonlyArray<infer R> ? R : never
+      lastDefinedParam = (param || lastDefinedParam) as AP extends ReadonlyArray<infer R> ? R : never
       if (!param) {
         param = lastDefinedParam
       }
 
       return param
-    })
+    }) as unknown as RuleParams<AP>
   } else {
-    definedParams = ruleSchema.params
+    definedParams = ruleSchema.params as RuleParams<AP>
   }
 
   // Match the provided array length with a temporary schema.
@@ -118,7 +118,7 @@ function buildParams(ruleName: string, provided: any[] | Record<string, any>) {
 
     // if the param is a target, resolve the target value.
     if (options.isTarget) {
-      value = createLocator(value, options.cast)
+      value = createLocator(value as string, options.cast)
     }
 
     // A target param using interpolation
@@ -148,7 +148,7 @@ function buildParams(ruleName: string, provided: any[] | Record<string, any>) {
  * Parses a rule string expression.
  */
 export const parseRule = (rule: string) => {
-  let params: string[] = []
+  let params: RuleParamSchema<string, unknown>[] = []
   const name = rule.split(":")[0]
 
   if (includes(rule, ":")) {
