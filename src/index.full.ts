@@ -64,6 +64,8 @@ const Rules = {
   required_if,
   size,
 }
+export { defineRuleParamConfig, defineValidation } from "./types"
+
 // Install all rules.
 const RulesAsList = Object.keys(Rules).map((key) => ({ schema: (Rules as any)[key], name: key }))
 RulesAsList.forEach(({ name, schema }) => {

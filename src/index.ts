@@ -36,6 +36,7 @@ export {
   required_if,
   size,
 } from "./rules"
+export { defineRuleParamConfig, defineValidation } from "./types"
 
 const version = "__VERSION__"
 
