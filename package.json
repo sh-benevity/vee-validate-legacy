@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "build": "unbuild",
-    "prepack": "yarn build",
+    "prepack": "pnpm build",
     "lint": "eslint . --fix",
     "checkTypes": "tsc src/*.ts test/*.ts --noEmit --esModuleInterop --resolveJsonModule"
   },
@@ -78,5 +78,10 @@
     "vite": "^4.1.4",
     "vitest": "^0.29.2",
     "vue-tsc": "^1.2.0"
+  },
+  "pnpm": {
+    "overrides":{
+      "vee-validate-legacy": "link:."
+    }
   }
 }
