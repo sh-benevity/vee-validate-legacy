@@ -5,6 +5,7 @@ import {
   RuleParamSchema,
   ValidationMessageGenerator,
   ValidationMessageTemplate,
+  ValidationParams,
   ValidationResult,
   ValidationRuleSchema,
 } from "./types"
@@ -190,7 +191,9 @@ async function _test(field: FieldContext, value: any, rule: { name: string; para
   }
 
   const normalizedValue = ruleSchema.castValue ? ruleSchema.castValue(value) : value
-  const params = fillTargetValues(rule.params, field.crossTable)
+  const params = fillTargetValues(rule.params, field.crossTable) as ValidationParams<
+    readonly RuleParamSchema<string, unknown>[]
+  >
 
   let result = await ruleSchema.validate(normalizedValue, params)
   if (typeof result === "string") {
