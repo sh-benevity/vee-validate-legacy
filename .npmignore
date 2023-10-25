@@ -1,0 +1,12 @@
+.idea
+docs
+*.tgz
+example
+test
+*.config.ts
+.editorconfig
+.eslintignore
+.eslintrc.js
+babel.config.js
+.prettierrc
+pnpm-workspace.yaml

@@ -24,5 +24,6 @@ module.exports = {
     "one-var": ["error", "never"],
     "vue/html-self-closing": "off",
     "@typescript-eslint/ban-types": ["error", { types: { Function: false } }],
+    "vue/singleline-html-element-content-newline": "off",
   },
 }

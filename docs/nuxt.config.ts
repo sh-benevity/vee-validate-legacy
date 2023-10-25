@@ -4,22 +4,35 @@ export default defineNuxtConfig({
   app: {
     baseURL: "/vee-validate-legacy",
   },
+  css: ["~/assets/styles/main.scss"],
 
   modules: ["@nuxtjs/i18n", "@nuxtjs/tailwindcss"],
 
   i18n: {
     locales: [
       {
-        code: "en_US",
-        file: "en_US.ts",
+        code: "en-CA",
+        name: "English",
+        file: "en-CA.ts",
+        iso: "en-CA",
+        dir: "ltr",
       },
       {
-        code: "fr_CA",
-        file: "fr_CA.ts",
+        code: "fr-CA",
+        name: "Français",
+        file: "fr-CA.ts",
+        iso: "fr-CA",
+        dir: "ltr",
       },
     ],
-    defaultLocale: "en_US",
-    langDir: "./lang",
+    lazy: true,
     strategy: "no_prefix",
+    defaultLocale: "en-CA",
+    langDir: "./lang/",
+    vueI18n: "./lang/vueI18n.config.ts",
+    detectBrowserLanguage: false,
+    experimental: {
+      jsTsFormatResource: true,
+    },
   },
 })

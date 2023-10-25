@@ -1,6 +1,6 @@
 # vee-validate-legacy
 
-vee-validate is a template-based validation framework for [Vue.js](https://vuejs.org/) that allows you to validate inputs and display errors.
+vee-validate-legacy is a template-based validation framework for [Vue.js](https://vuejs.org/) that allows you to validate inputs and display errors.
 
 Being template-based you only need to specify for each input what kind of validators should be used when the value changes. The errors will be automatically generated with 40+ locales supported. [Many rules are available out of the box](https://vee-validate.logaretm.com/v3/guide/rules.html).
 
@@ -14,6 +14,10 @@ This plugin is inspired by [PHP Framework Laravel's validation](https://laravel.
 - 💪 Written in TypeScript.
 - No dependencies.
 
+## Why this and not vee-validate
+
+Use it if you prefer how vee-validate worked with Vue 2
+
 ## Installation
 
 The latest release of vee-validate is v4, which is only available for Vue 3. If you are looking to install v3, then make sure to include the version tag.
@@ -21,13 +25,19 @@ The latest release of vee-validate is v4, which is only available for Vue 3. If 
 ### yarn
 
 ```bash
-yarn add vee-validate@3
+yarn add vee-validate-legacy
 ```
 
 ### npm
 
 ```bash
-npm i vee-validate@3 --save
+npm i vee-validate-legacy --save
+```
+
+### pnpm
+
+```bash
+pnpm i vee-validate-legacy
 ```
 
 ## Getting Started
