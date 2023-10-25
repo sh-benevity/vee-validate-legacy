@@ -43,8 +43,6 @@ const config: Config = {
         DEFAULT: "#0242E0",
         dark: "#061845",
         light: "#CDDCF3",
-        home: colors.green,
-        away: colors.blue,
       },
       red: colors.red,
       green: colors.green,
