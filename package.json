@@ -1,7 +1,7 @@
 {
   "name": "vee-validate-legacy",
   "description": "Template Based Validation Framework for Vue.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Vinccool96 <Vinccool96@gmail.com>",
   "license": "MIT",
   "repository": {
@@ -40,6 +40,11 @@
       "import": "./dist/types.mjs",
       "types": "./dist/types.d.ts",
       "require": "./dist/types.cjs"
+    },
+    "./rules": {
+      "import": "./dist/rules/index.mjs",
+      "types": "./dist/rules/index.d.ts",
+      "require": "./dist/rules/index.cjs"
     },
     "./locale/*.json": "./locale/*.json"
   },
